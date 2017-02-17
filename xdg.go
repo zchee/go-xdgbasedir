@@ -27,8 +27,11 @@ import (
 	"runtime"
 )
 
+var usrHome = os.Getenv("HOME")
 var usr = &user.User{}
 
+// TODO(zchee): Support cross-platform compile.
+// user.Current() uses cgo build in the Go stdlib internal.
 func init() {
 	cUser, err := user.Current()
 	if err != nil {
@@ -91,6 +94,11 @@ func ConfigDirs() string {
 //
 // $XDG_CACHE_HOME defines the base directory relative to which user specific non-essential data files should be stored.
 // If $XDG_CACHE_HOME is either not set or empty, a default equal to $HOME/.cache should be used.
+//
+// TODO(zchee): In macOS, Is it better to use the ~/Library/Caches directory? Or add the configurable by users setting?
+// Apple's "File System Programming Guide" describe the this directory should be used if users cache files.
+// However, some user who is using the macOS as Unix-like prefers $HOME/.cache.
+//  https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/MacOSXDirectories/MacOSXDirectories.html#//apple_ref/doc/uid/TP40010672-CH10-SW1
 func CacheHome() string {
 	cacheHome := os.Getenv("XDG_CACHE_HOME")
 	if cacheHome == "" {
@@ -104,6 +112,10 @@ func CacheHome() string {
 // $XDG_RUNTIME_DIR defines the base directory relative to which user-specific non-essential runtime files and
 // other file objects (such as sockets, named pipes, ...) should be stored. The directory MUST be owned by the user,
 // and he MUST be the only one having read and write access to it. Its Unix access mode MUST be 0700.
+//
+// TODO(zchee): Avoid use usr.Uid for support the cross-platform compile.
+// TODO(zchee): XDG_RUNTIME_DIR seems to change depending on the each distro or init system such as systemd.
+// Also In macOS, normal user haven't permission for write to this directory.
 func RuntimeDir() string {
 	runtimeDir := os.Getenv("XDG_RUNTIME_DIR")
 	if runtimeDir == "" {
@@ -113,18 +125,20 @@ func RuntimeDir() string {
 }
 
 func homeDir() string {
+	if usrHome != "" {
+		return usrHome
+	}
+
+	// TODO(zchee): In Windows OS, which of $HOME and these checks has priority?
 	if runtime.GOOS == "windows" {
-		home := filepath.Join(os.Getenv("HOMEDRIVE"), os.Getenv("HOMEPATH"))
-		if home == "" {
-			home = os.Getenv("USERPROFILE")
+		usrHome = filepath.Join(os.Getenv("HOMEDRIVE"), os.Getenv("HOMEPATH"))
+		if usrHome == "" {
+			usrHome = os.Getenv("USERPROFILE")
 		}
-		return home
+		return usrHome
 	}
 
-	homeDir := os.Getenv("HOME")
-	if homeDir != "" {
-		homeDir = usr.HomeDir
-	}
+	usrHome = usr.HomeDir
 
-	return homeDir
+	return usrHome
 }
