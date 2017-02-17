@@ -1,8 +1,8 @@
-// Copyright 2017 The go-xdg Authors. All rights reserved.
+// Copyright 2017 The go-xdgbasedir Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package xdg implements a freedesktop.org XDG Base Directory Specification.
+// Package xdgbasedir implements a freedesktop.org XDG Base Directory Specification.
 // XDG Base Directory Specification:
 //  https://specifications.freedesktop.org/basedir-spec/basedir-spec-0.8.html
 //
@@ -17,7 +17,7 @@
 // There is a set of preference ordered base directories relative to which configuration files should be searched. This set of directories is defined by the environment variable $XDG_CONFIG_DIRS.
 //
 // There is a single base directory relative to which user-specific non-essential (cached) data should be written. This directory is defined by the environment variable $XDG_CACHE_HOME.
-package xdg
+package xdgbasedir
 
 import (
 	"log"
