@@ -45,11 +45,10 @@ func init() {
 // $XDG_DATA_HOME defines the base directory relative to which user specific data files should be stored.
 // If $XDG_DATA_HOME is either not set or empty, a default equal to $HOME/.local/share should be used.
 func DataHome() string {
-	dataHome := os.Getenv("XDG_DATA_HOME")
-	if dataHome == "" {
-		dataHome = filepath.Join(homeDir(), ".local", "share")
+	if dataHome := os.Getenv("XDG_DATA_HOME"); dataHome != "" {
+		return dataHome
 	}
-	return dataHome
+	return filepath.Join(homeDir(), ".local", "share")
 }
 
 // ConfigHome return the XDG_CONFIG_HOME based directory path.
@@ -57,11 +56,10 @@ func DataHome() string {
 // $XDG_CONFIG_HOME defines the base directory relative to which user specific configuration files should be stored.
 // If $XDG_CONFIG_HOME is either not set or empty, a default equal to $HOME/.config should be used.
 func ConfigHome() string {
-	configHome := os.Getenv("XDG_CONFIG_HOME")
-	if configHome == "" {
-		configHome = filepath.Join(homeDir(), ".config")
+	if configHome := os.Getenv("XDG_CONFIG_HOME"); configHome != "" {
+		return configHome
 	}
-	return configHome
+	return filepath.Join(homeDir(), ".config")
 }
 
 // DataDirs return the XDG_DATA_DIRS based directory path.
@@ -70,11 +68,10 @@ func ConfigHome() string {
 // to the $XDG_DATA_HOME base directory. The directories in $XDG_DATA_DIRS should be seperated with a colon ':'.
 // If $XDG_DATA_DIRS is either not set or empty, a value equal to /usr/local/share/:/usr/share/ should be used.
 func DataDirs() string {
-	dataDirs := os.Getenv("XDG_DATA_DIRS")
-	if dataDirs == "" {
-		dataDirs = filepath.Join("usr", "local", "share", string(filepath.ListSeparator), "usr", "share")
+	if dataDirs := os.Getenv("XDG_DATA_DIRS"); dataDirs != "" {
+		return dataDirs
 	}
-	return dataDirs
+	return filepath.Join("usr", "local", "share", string(filepath.ListSeparator), "usr", "share")
 }
 
 // ConfigDirs return the XDG_CONFIG_DIRS based directory path.
@@ -83,11 +80,10 @@ func DataDirs() string {
 // to the $XDG_CONFIG_HOME base directory. The directories in $XDG_CONFIG_DIRS should be seperated with a colon ':'.
 // If $XDG_CONFIG_DIRS is either not set or empty, a value equal to /etc/xdg should be used.
 func ConfigDirs() string {
-	configDirs := os.Getenv("XDG_CONFIG_DIRS")
-	if configDirs == "" {
-		configDirs = filepath.Join("etc", "xdg")
+	if configDirs := os.Getenv("XDG_CONFIG_DIRS"); configDirs != "" {
+		return configDirs
 	}
-	return configDirs
+	return filepath.Join("etc", "xdg")
 }
 
 // CacheHome return the XDG_CACHE_HOME based directory path.
@@ -100,11 +96,10 @@ func ConfigDirs() string {
 // However, some user who is using the macOS as Unix-like prefers $HOME/.cache.
 //  https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/MacOSXDirectories/MacOSXDirectories.html#//apple_ref/doc/uid/TP40010672-CH10-SW1
 func CacheHome() string {
-	cacheHome := os.Getenv("XDG_CACHE_HOME")
-	if cacheHome == "" {
-		cacheHome = filepath.Join(homeDir(), ".cache")
+	if cacheHome := os.Getenv("XDG_CACHE_HOME"); cacheHome != "" {
+		return cacheHome
 	}
-	return cacheHome
+	return filepath.Join(homeDir(), ".cache")
 }
 
 // RuntimeDir return the XDG_RUNTIME_DIR based directory path.
@@ -117,11 +112,10 @@ func CacheHome() string {
 // TODO(zchee): XDG_RUNTIME_DIR seems to change depending on the each distro or init system such as systemd.
 // Also In macOS, normal user haven't permission for write to this directory.
 func RuntimeDir() string {
-	runtimeDir := os.Getenv("XDG_RUNTIME_DIR")
-	if runtimeDir == "" {
-		runtimeDir = filepath.Join("run", "user", usr.Uid)
+	if runtimeDir := os.Getenv("XDG_RUNTIME_DIR"); runtimeDir != "" {
+		return runtimeDir
 	}
-	return runtimeDir
+	return filepath.Join("run", "user", usr.Uid)
 }
 
 func homeDir() string {
