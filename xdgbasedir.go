@@ -4,7 +4,7 @@
 
 // Package xdgbasedir implements a freedesktop.org XDG Base Directory Specification.
 // XDG Base Directory Specification:
-//  https://specifications.freedesktop.org/basedir-spec/basedir-spec-0.8.html
+//  https://specifications.freedesktop.org/basedir-spec/0.8/
 //
 // The XDG Base Directory Specification is based on the following concepts:
 //

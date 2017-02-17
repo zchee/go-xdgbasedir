@@ -11,7 +11,8 @@ A package xdg implements a XDG Base Directory Specification for Go.
 [![godoc.org][godoc-badge]][godoc] [![codecov.io][codecov-badge]][codecov] [![Analytics][ga-badge]][ga]
 
 - freedesktop.org XDG Base Directory Specification reference:
-  - https://specifications.freedesktop.org/basedir-spec/basedir-spec-0.8.html
+  - https://specifications.freedesktop.org/basedir-spec/0.8/
+  - https://specifications.freedesktop.org/basedir-spec/latest/
 - Current supported specification version:
   - 0.8
 
