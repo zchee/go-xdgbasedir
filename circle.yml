@@ -1,0 +1,30 @@
+machine:
+  xcode:
+    version: "8.2.1" # build 8C1002, OS X 10.11.6 (15G1108)
+  environment:
+    HOMEBREW_CACHE: "$HOME/.cache/Homebrew" # cache for Homebrew
+    HOMEBREW_NO_AUTO_UPDATE: 1 # avoid automatically 'brew update'
+    XCODE_SCHEME: go-xdgbasedir
+    XCODE_WORKSPACE: go-xdgbasedir.xcworkspace
+    GOPATH: "$HOME/go"
+
+dependencies:
+  pre:
+    - uname -a
+    - sw_vers
+    - mkdir -p $HOMEBREW_CACHE; brew upgrade https://github.com/Homebrew/homebrew-core/raw/master/Formula/go.rb || true
+  override:
+    - go get -u github.com/golang/lint/golint
+  post:
+    - go version; go env
+  cache_directories:
+    - '~/.cache/Homebrew'
+
+test:
+  override:
+    - go test -v -race -coverprofile=coverage.txt -covermode=atomic
+  post:
+    - bash <(curl -s https://codecov.io/bash)
+    - test -z "$(gofmt -s -l -w . | tee /dev/stderr)"
+    - test -z "$(golint ./...     | tee /dev/stderr)"
+    - go vet ./...
