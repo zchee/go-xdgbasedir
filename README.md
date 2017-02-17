@@ -1,6 +1,6 @@
 # go-xdg
 
-A package xdg is a implements a XDG Base Directory Specification.
+A package xdg implements a XDG Base Directory Specification for Go.
 
 |                   | **CI**                                        |
 |-------------------|-----------------------------------------------|
@@ -9,6 +9,11 @@ A package xdg is a implements a XDG Base Directory Specification.
 | **windows**       | [![appveyor-badge][appveyor-badge]][appveyor] |
 
 [![godoc.org][godoc-badge]][godoc] [![codecov.io][codecov-badge]][codecov] [![Analytics][ga-badge]][ga]
+
+- freedesktop.org XDG Base Directory Specification reference:
+  - https://specifications.freedesktop.org/basedir-spec/basedir-spec-0.8.html
+- Current supported specification version:
+  - 0.8
 
 
 [travis-ci]: https://travis-ci.org/zchee/go-xdg
