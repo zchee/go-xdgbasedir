@@ -38,7 +38,7 @@ func TestDataHome(t *testing.T) {
 			want: filepath.Join(string(filepath.Separator), "tmp", "xdg", ".local", "share"),
 		},
 		{
-			name: "empty env",
+			name: "Empty env",
 			env:  "",
 			want: filepath.Join(testHomeDir, ".local", "share"),
 		},
@@ -73,7 +73,7 @@ func TestConfigHome(t *testing.T) {
 			want: filepath.Join(string(filepath.Separator), "tmp", "config"),
 		},
 		{
-			name: "empty env",
+			name: "Empty env",
 			env:  "",
 			want: filepath.Join(testHomeDir, ".config"),
 		},
@@ -109,7 +109,7 @@ func TestDataDirs(t *testing.T) {
 			want: filepath.Join(string(filepath.Separator), "opt", "local", "share"),
 		},
 		{
-			name: "empty env",
+			name: "Empty env",
 			env:  "",
 			want: defaultDataDirs,
 		},
@@ -145,7 +145,7 @@ func TestConfigDirs(t *testing.T) {
 			want: filepath.Join(string(filepath.Separator), "var", "etc", "xdg"),
 		},
 		{
-			name: "empty env",
+			name: "Empty env",
 			env:  "",
 			want: defaultConfigDirs,
 		},
@@ -181,7 +181,7 @@ func TestCacheHome(t *testing.T) {
 			want: filepath.Join(string(filepath.Separator), "tmp", "cache"),
 		},
 		{
-			name: "empty env",
+			name: "Empty env",
 			env:  "",
 			want: defaultCacheHome,
 		},
@@ -219,7 +219,7 @@ func TestRuntimeDir(t *testing.T) {
 			want: filepath.Join(string(filepath.Separator), "tmp", "user", "1000"),
 		},
 		{
-			name: "empty env",
+			name: "Empty env",
 			env:  "",
 			want: defaultRuntimeDir,
 		},
@@ -251,7 +251,7 @@ func Test_homeDir(t *testing.T) {
 			want: testHomeDir,
 		},
 		{
-			name: "assign different usrHome",
+			name: "Assign different usrHome",
 			env:  "",
 			home: filepath.FromSlash(filepath.Join(string(filepath.Separator), "Users", testUserName)),
 			want: filepath.FromSlash(filepath.Join(string(filepath.Separator), "Users", testUserName)),
