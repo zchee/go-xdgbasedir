@@ -98,6 +98,7 @@ func ConfigDirs() string {
 // TODO(zchee): In macOS, Is it better to use the ~/Library/Caches directory? Or add the configurable by users setting?
 // Apple's "File System Programming Guide" describe the this directory should be used if users cache files.
 // However, some user who is using the macOS as Unix-like prefers $HOME/.cache.
+// xref:
 //  https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/MacOSXDirectories/MacOSXDirectories.html#//apple_ref/doc/uid/TP40010672-CH10-SW1
 func CacheHome() string {
 	if cacheHome := os.Getenv("XDG_CACHE_HOME"); cacheHome != "" {
@@ -115,6 +116,8 @@ func CacheHome() string {
 // TODO(zchee): Avoid use usr.Uid for support the cross-platform compile.
 // TODO(zchee): XDG_RUNTIME_DIR seems to change depending on the each distro or init system such as systemd.
 // Also In macOS, normal user haven't permission for write to this directory.
+// xref:
+//	http://serverfault.com/questions/388840/good-default-for-xdg-runtime-dir/727994#727994
 func RuntimeDir() string {
 	if runtimeDir := os.Getenv("XDG_RUNTIME_DIR"); runtimeDir != "" {
 		return runtimeDir
