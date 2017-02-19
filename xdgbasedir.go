@@ -73,7 +73,7 @@ func DataDirs() string {
 	if dataDirs := os.Getenv("XDG_DATA_DIRS"); dataDirs != "" {
 		return dataDirs
 	}
-	return filepath.Join("usr", "local", "share", string(filepath.ListSeparator), "usr", "share")
+	return filepath.Join(string(filepath.Separator), "usr", "local", "share", string(filepath.ListSeparator), "usr", "share")
 }
 
 // ConfigDirs return the XDG_CONFIG_DIRS based directory path.
@@ -87,7 +87,7 @@ func ConfigDirs() string {
 	if configDirs := os.Getenv("XDG_CONFIG_DIRS"); configDirs != "" {
 		return configDirs
 	}
-	return filepath.Join("etc", "xdg")
+	return filepath.Join(string(filepath.Separator), "etc", "xdg")
 }
 
 // CacheHome return the XDG_CACHE_HOME based directory path.
@@ -119,7 +119,7 @@ func RuntimeDir() string {
 	if runtimeDir := os.Getenv("XDG_RUNTIME_DIR"); runtimeDir != "" {
 		return runtimeDir
 	}
-	return filepath.Join("run", "user", usr.Uid)
+	return filepath.Join(string(filepath.Separator), "run", "user", usr.Uid)
 }
 
 func homeDir() string {
