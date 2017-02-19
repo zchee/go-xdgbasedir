@@ -274,7 +274,13 @@ func Test_homeDir(t *testing.T) {
 		default:
 			os.Setenv("HOME", tt.env)
 		}
-		if tt.home != "" {
+		switch tt.home {
+		case "":
+			// nothing to do
+		case "empty":
+			usrHome = ""
+			usr.HomeDir = testHomeDir
+		default:
 			usrHome = tt.home
 		}
 
