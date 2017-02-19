@@ -36,5 +36,5 @@ after_test:
   - pip install -U codecov
   - codecov
   - gofmt -s -l -w .
-  - golint .
-  - go vet .
+  - golint ./...
+  - go vet ./...
