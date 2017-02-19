@@ -257,10 +257,16 @@ func Test_homeDir(t *testing.T) {
 			want: filepath.FromSlash(filepath.Join(string(filepath.Separator), "Users", testUserName)),
 		},
 		{
-			name: "empty HOME env",
-			env:  "empty",
-			home: filepath.FromSlash(filepath.Join(string(filepath.Separator), "home", "empty")),
-			want: filepath.FromSlash(filepath.Join(string(filepath.Separator), "home", "empty")),
+			name: "Set different $HOME env",
+			env:  filepath.FromSlash(filepath.Join(string(filepath.Separator), "tmp", "home")),
+			home: filepath.FromSlash(filepath.Join(string(filepath.Separator), "Users", testUserName)),
+			want: filepath.FromSlash(filepath.Join(string(filepath.Separator), "Users", testUserName)),
+		},
+		{
+			name: "Empty HOME env",
+			env:  "",
+			home: "empty",
+			want: testHomeDir,
 		},
 	}
 	for _, tt := range tests {
