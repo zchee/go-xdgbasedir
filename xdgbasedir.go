@@ -129,7 +129,7 @@ func homeDir() string {
 
 	// TODO(zchee): In Windows OS, which of $HOME and these checks has priority?
 	if runtime.GOOS == "windows" {
-		usrHome = filepath.Join(os.Getenv("HOMEDRIVE"), os.Getenv("HOMEPATH"))
+		usrHome = os.Getenv("HOMEDRIVE") + os.Getenv("HOMEPATH")
 		if usrHome == "" {
 			usrHome = os.Getenv("USERPROFILE")
 		}
