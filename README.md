@@ -1,6 +1,6 @@
 # go-xdgbasedir
 
-A package xdg implements a XDG Base Directory Specification for Go.
+A package xdgbasedir implements a XDG Base Directory Specification for Go.
 
 |                   | **CI**                                        |
 |-------------------|-----------------------------------------------|
