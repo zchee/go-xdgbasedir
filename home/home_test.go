@@ -8,14 +8,20 @@ import (
 	"flag"
 	"os"
 	"path/filepath"
+	"runtime"
 	"testing"
 )
 
 var testUserName = "gopher"
-var testHomeDir = filepath.FromSlash(filepath.Join(string(filepath.Separator), "home", testUserName))
+var testHomeDir = filepath.FromSlash(filepath.Join("/Users", testUserName))
 
 func TestMain(m *testing.M) {
 	flag.Parse()
+
+	if runtime.GOOS == "windows" {
+		testUserName = os.Getenv("USERNAME")
+		testHomeDir = filepath.VolumeName(testHomeDir)
+	}
 
 	usrHome = testHomeDir
 	os.Exit(m.Run())
