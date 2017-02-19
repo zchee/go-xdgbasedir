@@ -20,25 +20,12 @@
 package xdgbasedir
 
 import (
-	"log"
 	"os"
-	"os/user"
 	"path/filepath"
-	"runtime"
+	"strconv"
+
+	"github.com/zchee/go-xdgbasedir/home"
 )
-
-var usrHome = os.Getenv("HOME")
-var usr = &user.User{}
-
-// TODO(zchee): Support cross-platform compile.
-// user.Current() uses cgo build in the Go stdlib internal.
-func init() {
-	cUser, err := user.Current()
-	if err != nil {
-		log.Fatal(err)
-	}
-	usr = cUser
-}
 
 // DataHome return the XDG_DATA_HOME based directory path.
 //
@@ -48,7 +35,7 @@ func DataHome() string {
 	if dataHome := os.Getenv("XDG_DATA_HOME"); dataHome != "" {
 		return dataHome
 	}
-	return filepath.Join(homeDir(), ".local", "share")
+	return filepath.Join(home.Dir(), ".local", "share")
 }
 
 // ConfigHome return the XDG_CONFIG_HOME based directory path.
@@ -59,7 +46,7 @@ func ConfigHome() string {
 	if configHome := os.Getenv("XDG_CONFIG_HOME"); configHome != "" {
 		return configHome
 	}
-	return filepath.Join(homeDir(), ".config")
+	return filepath.Join(home.Dir(), ".config")
 }
 
 // DataDirs return the XDG_DATA_DIRS based directory path.
@@ -104,7 +91,7 @@ func CacheHome() string {
 	if cacheHome := os.Getenv("XDG_CACHE_HOME"); cacheHome != "" {
 		return cacheHome
 	}
-	return filepath.Join(homeDir(), ".cache")
+	return filepath.Join(home.Dir(), ".cache")
 }
 
 // RuntimeDir return the XDG_RUNTIME_DIR based directory path.
@@ -113,7 +100,6 @@ func CacheHome() string {
 // other file objects (such as sockets, named pipes, ...) should be stored. The directory MUST be owned by the user,
 // and he MUST be the only one having read and write access to it. Its Unix access mode MUST be 0700.
 //
-// TODO(zchee): Avoid use usr.Uid for support the cross-platform compile.
 // TODO(zchee): XDG_RUNTIME_DIR seems to change depending on the each distro or init system such as systemd.
 // Also In macOS, normal user haven't permission for write to this directory.
 // xref:
@@ -122,24 +108,5 @@ func RuntimeDir() string {
 	if runtimeDir := os.Getenv("XDG_RUNTIME_DIR"); runtimeDir != "" {
 		return runtimeDir
 	}
-	return filepath.Join(string(filepath.Separator), "run", "user", usr.Uid)
-}
-
-func homeDir() string {
-	if usrHome != "" {
-		return usrHome
-	}
-
-	// TODO(zchee): In Windows OS, which of $HOME and these checks has priority?
-	if runtime.GOOS == "windows" {
-		usrHome = os.Getenv("HOMEDRIVE") + os.Getenv("HOMEPATH")
-		if usrHome == "" {
-			usrHome = os.Getenv("USERPROFILE")
-		}
-		return usrHome
-	}
-
-	usrHome = usr.HomeDir
-
-	return usrHome
+	return filepath.Join(string(filepath.Separator), "run", "user", strconv.Itoa(os.Getuid()))
 }

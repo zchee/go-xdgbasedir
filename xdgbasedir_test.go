@@ -5,21 +5,13 @@
 package xdgbasedir
 
 import (
-	"flag"
 	"os"
 	"path/filepath"
+	"strconv"
 	"testing"
+
+	home "github.com/zchee/go-xdgbasedir/home"
 )
-
-var testUserName = "gopher"
-var testHomeDir = filepath.FromSlash(filepath.Join(string(filepath.Separator), "home", testUserName))
-
-func TestMain(m *testing.M) {
-	flag.Parse()
-
-	usrHome = testHomeDir
-	os.Exit(m.Run())
-}
 
 func TestDataHome(t *testing.T) {
 	tests := []struct {
@@ -29,8 +21,8 @@ func TestDataHome(t *testing.T) {
 	}{
 		{
 			name: "Set env based specification",
-			env:  filepath.Join(testHomeDir, ".local", "share"),
-			want: filepath.Join(testHomeDir, ".local", "share"),
+			env:  filepath.Join(home.Dir(), ".local", "share"),
+			want: filepath.Join(home.Dir(), ".local", "share"),
 		},
 		{
 			name: "Set env based different from specification",
@@ -40,7 +32,7 @@ func TestDataHome(t *testing.T) {
 		{
 			name: "Empty env",
 			env:  "",
-			want: filepath.Join(testHomeDir, ".local", "share"),
+			want: filepath.Join(home.Dir(), ".local", "share"),
 		},
 	}
 	for _, tt := range tests {
@@ -64,8 +56,8 @@ func TestConfigHome(t *testing.T) {
 	}{
 		{
 			name: "Set env based specification",
-			env:  filepath.Join(testHomeDir, ".config"),
-			want: filepath.Join(testHomeDir, ".config"),
+			env:  filepath.Join(home.Dir(), ".config"),
+			want: filepath.Join(home.Dir(), ".config"),
 		},
 		{
 			name: "Set env based different from specification",
@@ -75,7 +67,7 @@ func TestConfigHome(t *testing.T) {
 		{
 			name: "Empty env",
 			env:  "",
-			want: filepath.Join(testHomeDir, ".config"),
+			want: filepath.Join(home.Dir(), ".config"),
 		},
 	}
 	for _, tt := range tests {
@@ -164,7 +156,7 @@ func TestConfigDirs(t *testing.T) {
 }
 
 func TestCacheHome(t *testing.T) {
-	defaultCacheHome := filepath.Join(testHomeDir, ".cache")
+	defaultCacheHome := filepath.Join(home.Dir(), ".cache")
 	tests := []struct {
 		name string
 		env  string
@@ -200,8 +192,7 @@ func TestCacheHome(t *testing.T) {
 }
 
 func TestRuntimeDir(t *testing.T) {
-	usr.Uid = "1000"
-	defaultRuntimeDir := filepath.Join(string(filepath.Separator), "run", "user", "1000")
+	defaultRuntimeDir := filepath.Join(string(filepath.Separator), "run", "user", strconv.Itoa(os.Getuid()))
 
 	tests := []struct {
 		name string
@@ -232,67 +223,6 @@ func TestRuntimeDir(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := RuntimeDir(); got != tt.want {
 				t.Errorf("RuntimeDir() = %v, want %v", got, tt.want)
-			}
-		})
-	}
-}
-
-func Test_homeDir(t *testing.T) {
-	tests := []struct {
-		name string
-		env  string
-		home string
-		want string
-	}{
-		{
-			name: "default usrHome",
-			env:  "",
-			home: "",
-			want: testHomeDir,
-		},
-		{
-			name: "Assign different usrHome",
-			env:  "",
-			home: filepath.FromSlash(filepath.Join(string(filepath.Separator), "Users", testUserName)),
-			want: filepath.FromSlash(filepath.Join(string(filepath.Separator), "Users", testUserName)),
-		},
-		{
-			name: "Set different $HOME env",
-			env:  filepath.FromSlash(filepath.Join(string(filepath.Separator), "tmp", "home")),
-			home: filepath.FromSlash(filepath.Join(string(filepath.Separator), "Users", testUserName)),
-			want: filepath.FromSlash(filepath.Join(string(filepath.Separator), "Users", testUserName)),
-		},
-		{
-			name: "Empty HOME env",
-			env:  "",
-			home: "empty",
-			want: testHomeDir,
-		},
-	}
-	for _, tt := range tests {
-		os.Clearenv()
-
-		switch tt.env {
-		case "":
-			// nothing to do
-		case "empty":
-			os.Unsetenv("HOME")
-		default:
-			os.Setenv("HOME", tt.env)
-		}
-		switch tt.home {
-		case "":
-			// nothing to do
-		case "empty":
-			usrHome = ""
-			usr.HomeDir = testHomeDir
-		default:
-			usrHome = tt.home
-		}
-
-		t.Run(tt.name, func(t *testing.T) {
-			if got := homeDir(); got != tt.want {
-				t.Errorf("homeDir() = %v, want %v", got, tt.want)
 			}
 		})
 	}
