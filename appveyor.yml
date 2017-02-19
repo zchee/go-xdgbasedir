@@ -29,8 +29,9 @@ build: false
 # Test
 before_test:
   - go get -u github.com/golang/lint/golint
+  - go get -u github.com/haya14busa/goverage
 test_script:
-  - go test -v -race -coverprofile=coverage.txt -covermode=atomic
+  - goverage -v -race -coverprofile=coverage.txt -covermode=atomic ./...
 after_test:
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   - pip install -U codecov
