@@ -19,8 +19,9 @@ func TestMain(m *testing.M) {
 	flag.Parse()
 
 	if runtime.GOOS == "windows" {
+		// TODO(zchee): what?
 		testUserName = os.Getenv("USERNAME")
-		testHomeDir = filepath.VolumeName(testHomeDir)
+		testHomeDir = filepath.FromSlash(filepath.Join("C:/Users", testUserName))
 	}
 
 	usrHome = testHomeDir
