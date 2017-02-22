@@ -6,14 +6,10 @@
 package home
 
 import (
-	"bytes"
-	"fmt"
 	"log"
 	"os"
-	"os/exec"
 	"os/user"
 	"runtime"
-	"strings"
 )
 
 var usrHome = os.Getenv("HOME")
@@ -40,13 +36,7 @@ func Dir() string {
 	if runtime.GOOS == "windows" {
 		// Respect the USERPROFILE environment variable because Go stdlib uses it for default GOPATH in the "go/build" package.
 		if usrHome = os.Getenv("USERPROFILE"); usrHome == "" {
-			if usrHome = os.Getenv("HOMEDRIVE") + os.Getenv("HOMEPATH"); usrHome == "" {
-				userProfile, err := echoUserProfile()
-				if err != nil {
-					log.Fatalf("home: %v", err)
-				}
-				usrHome = userProfile
-			}
+			usrHome = os.Getenv("HOMEDRIVE") + os.Getenv("HOMEPATH")
 		}
 
 		if usrHome != "" {
@@ -57,15 +47,4 @@ func Dir() string {
 	usrHome = usr.HomeDir
 
 	return usrHome
-}
-
-func echoUserProfile() (string, error) {
-	var stdout bytes.Buffer
-	cmd := exec.Command("echo", "%USERPROFILE%")
-	cmd.Stdout = &stdout
-	if err := cmd.Run(); err != nil {
-		return "", fmt.Errorf("Couldn't get the %%USERPROFILE%% environment variable: %v", err)
-	}
-
-	return strings.TrimSpace(stdout.String()), nil
 }
