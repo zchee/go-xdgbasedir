@@ -43,14 +43,14 @@ func TestDir(t *testing.T) {
 		{
 			name: "Assign different usrHome",
 			env:  "",
-			home: filepath.FromSlash(filepath.Join(string(filepath.Separator), "Users", testUserName)),
-			want: filepath.FromSlash(filepath.Join(string(filepath.Separator), "Users", testUserName)),
+			home: filepath.FromSlash(filepath.Join("/Users", testUserName)),
+			want: filepath.FromSlash(filepath.Join("/Users", testUserName)),
 		},
 		{
 			name: "Set different $HOME env",
-			env:  filepath.FromSlash(filepath.Join(string(filepath.Separator), "tmp", "home")),
-			home: filepath.FromSlash(filepath.Join(string(filepath.Separator), "Users", testUserName)),
-			want: filepath.FromSlash(filepath.Join(string(filepath.Separator), "Users", testUserName)),
+			env:  filepath.FromSlash(filepath.Join("/tmp", "home")),
+			home: filepath.FromSlash(filepath.Join("/Users", testUserName)),
+			want: filepath.FromSlash(filepath.Join("/Users", testUserName)),
 		},
 		{
 			name: "Empty HOME env",
@@ -68,6 +68,7 @@ func TestDir(t *testing.T) {
 		default:
 			os.Setenv("HOME", tt.env)
 		}
+
 		switch tt.home {
 		case "":
 			// nothing to do
