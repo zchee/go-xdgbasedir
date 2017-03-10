@@ -6,24 +6,11 @@
 package home
 
 import (
-	"log"
 	"os"
-	"os/user"
 	"runtime"
 )
 
 var usrHome = os.Getenv("HOME")
-var usr = &user.User{}
-
-// TODO(zchee): user.Current() use of cgo compile in the Go stdlib internal.
-// Support cross-platform compiling without the "os/user" package if possible. Or make to optional with the build tag.
-func init() {
-	cUser, err := user.Current()
-	if err != nil {
-		log.Fatal(err)
-	}
-	usr = cUser
-}
 
 // Dir detects and returns the user home directory.
 func Dir() string {
@@ -38,13 +25,7 @@ func Dir() string {
 		if usrHome = os.Getenv("USERPROFILE"); usrHome == "" {
 			usrHome = os.Getenv("HOMEDRIVE") + os.Getenv("HOMEPATH")
 		}
-
-		if usrHome != "" {
-			return usrHome
-		}
 	}
-
-	usrHome = usr.HomeDir
 
 	return usrHome
 }
