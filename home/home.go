@@ -6,8 +6,11 @@
 package home
 
 import (
+	"bytes"
 	"os"
+	"os/exec"
 	"runtime"
+	"strings"
 )
 
 var usrHome = os.Getenv("HOME")
@@ -25,6 +28,15 @@ func Dir() string {
 		if usrHome = os.Getenv("USERPROFILE"); usrHome == "" {
 			usrHome = os.Getenv("HOMEDRIVE") + os.Getenv("HOMEPATH")
 		}
+	} else {
+		// Fallback with sh pwd commmand
+		var stdout bytes.Buffer
+		cmd := exec.Command("sh", "-c", "cd && pwd")
+		cmd.Stdout = &stdout
+		if err := cmd.Run(); err != nil {
+			return ""
+		}
+		usrHome = strings.TrimSpace(stdout.String())
 	}
 
 	return usrHome
