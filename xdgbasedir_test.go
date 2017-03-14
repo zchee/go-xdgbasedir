@@ -10,10 +10,12 @@ import (
 	"strconv"
 	"testing"
 
-	home "github.com/zchee/go-xdgbasedir/home"
+	"github.com/zchee/go-xdgbasedir/home"
 )
 
 func TestDataHome(t *testing.T) {
+	defaultDataHome := filepath.Join(home.Dir(), ".local", "share")
+
 	tests := []struct {
 		name string
 		env  string
@@ -21,8 +23,8 @@ func TestDataHome(t *testing.T) {
 	}{
 		{
 			name: "Set env based specification",
-			env:  filepath.Join(home.Dir(), ".local", "share"),
-			want: filepath.Join(home.Dir(), ".local", "share"),
+			env:  defaultDataHome,
+			want: defaultDataHome,
 		},
 		{
 			name: "Set env based different from specification",
@@ -32,11 +34,11 @@ func TestDataHome(t *testing.T) {
 		{
 			name: "Empty env",
 			env:  "",
-			want: filepath.Join(home.Dir(), ".local", "share"),
+			want: defaultDataHome,
 		},
 	}
 	for _, tt := range tests {
-		os.Clearenv()
+		os.Unsetenv("XDG_DATA_HOME")
 		if tt.env != "" {
 			os.Setenv("XDG_DATA_HOME", tt.env)
 		}
@@ -49,6 +51,8 @@ func TestDataHome(t *testing.T) {
 }
 
 func TestConfigHome(t *testing.T) {
+	defaultConfigHome := filepath.Join(home.Dir(), ".config")
+
 	tests := []struct {
 		name string
 		env  string
@@ -56,8 +60,8 @@ func TestConfigHome(t *testing.T) {
 	}{
 		{
 			name: "Set env based specification",
-			env:  filepath.Join(home.Dir(), ".config"),
-			want: filepath.Join(home.Dir(), ".config"),
+			env:  defaultConfigHome,
+			want: defaultConfigHome,
 		},
 		{
 			name: "Set env based different from specification",
@@ -67,11 +71,11 @@ func TestConfigHome(t *testing.T) {
 		{
 			name: "Empty env",
 			env:  "",
-			want: filepath.Join(home.Dir(), ".config"),
+			want: defaultConfigHome,
 		},
 	}
 	for _, tt := range tests {
-		os.Clearenv()
+		os.Unsetenv("XDG_CONFIG_HOME")
 		if tt.env != "" {
 			os.Setenv("XDG_CONFIG_HOME", tt.env)
 		}
@@ -85,6 +89,7 @@ func TestConfigHome(t *testing.T) {
 
 func TestDataDirs(t *testing.T) {
 	defaultDataDirs := filepath.Join(string(filepath.Separator), "usr", "local", "share", string(filepath.ListSeparator), "usr", "share")
+
 	tests := []struct {
 		name string
 		env  string
@@ -107,7 +112,7 @@ func TestDataDirs(t *testing.T) {
 		},
 	}
 	for _, tt := range tests {
-		os.Clearenv()
+		os.Unsetenv("XDG_DATA_DIRS")
 		if tt.env != "" {
 			os.Setenv("XDG_DATA_DIRS", tt.env)
 		}
@@ -121,6 +126,7 @@ func TestDataDirs(t *testing.T) {
 
 func TestConfigDirs(t *testing.T) {
 	defaultConfigDirs := filepath.Join(string(filepath.Separator), "etc", "xdg")
+
 	tests := []struct {
 		name string
 		env  string
@@ -143,7 +149,7 @@ func TestConfigDirs(t *testing.T) {
 		},
 	}
 	for _, tt := range tests {
-		os.Clearenv()
+		os.Unsetenv("XDG_CONFIG_DIRS")
 		if tt.env != "" {
 			os.Setenv("XDG_CONFIG_DIRS", tt.env)
 		}
@@ -179,7 +185,7 @@ func TestCacheHome(t *testing.T) {
 		},
 	}
 	for _, tt := range tests {
-		os.Clearenv()
+		os.Unsetenv("XDG_CACHE_HOME")
 		if tt.env != "" {
 			os.Setenv("XDG_CACHE_HOME", tt.env)
 		}
@@ -216,7 +222,7 @@ func TestRuntimeDir(t *testing.T) {
 		},
 	}
 	for _, tt := range tests {
-		os.Clearenv()
+		os.Unsetenv("XDG_RUNTIME_DIR")
 		if tt.env != "" {
 			os.Setenv("XDG_RUNTIME_DIR", tt.env)
 		}
