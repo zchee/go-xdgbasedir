@@ -24,7 +24,7 @@ func Dir() string {
 
 	// Fallback with sh pwd commmand
 	var stdout bytes.Buffer
-	cmd := exec.Command("sh", "-c", "cd && pwd")
+	cmd := exec.Command("sh", "-c", "eval echo ~$USER")
 	cmd.Stdout = &stdout
 	if err := cmd.Run(); err != nil {
 		return ""
