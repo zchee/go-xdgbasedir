@@ -10,11 +10,10 @@ import (
 	"os"
 )
 
-var usrHome = os.Getenv("HOME")
-
 // Dir detects and returns the user home directory.
 func Dir() string {
 	// At first, Check the $HOME environment variable
+	usrHome := os.Getenv("HOME")
 	if usrHome != "" {
 		return usrHome
 	}
