@@ -12,19 +12,20 @@ import (
 	"testing"
 )
 
-var testUserName = "gopher"
-var testHomeDir = filepath.FromSlash(filepath.Join("/Users", testUserName))
+var testHomeDir string
 
 func TestMain(m *testing.M) {
 	flag.Parse()
 
-	if runtime.GOOS == "windows" {
-		// TODO(zchee): what?
-		testUserName = os.Getenv("USERNAME")
-		testHomeDir = filepath.FromSlash(filepath.Join("C:/Users", testUserName))
+	switch runtime.GOOS {
+	case "darwin":
+		testHomeDir = filepath.Join("/Users", os.Getenv("USER"))
+	case "linux":
+		testHomeDir = filepath.Join("/home", os.Getenv("USER"))
+	case "windows":
+		testHomeDir = filepath.FromSlash(filepath.Join("C:/Users", os.Getenv("USERNAME")))
 	}
 
-	usrHome = testHomeDir
 	os.Exit(m.Run())
 }
 
@@ -32,34 +33,25 @@ func TestDir(t *testing.T) {
 	tests := []struct {
 		name string
 		env  string
-		home string
 		want string
 	}{
 		{
 			name: "default usrHome",
 			env:  "",
-			home: "",
 			want: testHomeDir,
-		},
-		{
-			name: "Assign different usrHome",
-			env:  "",
-			home: filepath.FromSlash(filepath.Join("/Users", testUserName)),
-			want: filepath.FromSlash(filepath.Join("/Users", testUserName)),
 		},
 		{
 			name: "Set different $HOME env",
 			env:  filepath.FromSlash(filepath.Join("/tmp", "home")),
-			home: filepath.FromSlash(filepath.Join("/Users", testUserName)),
-			want: filepath.FromSlash(filepath.Join("/Users", testUserName)),
+			want: filepath.FromSlash(filepath.Join("/tmp", "home")),
 		},
 		{
 			name: "Empty HOME env",
-			env:  "",
-			home: "empty",
+			env:  "empty",
 			want: testHomeDir,
 		},
 	}
+
 	for _, tt := range tests {
 		switch tt.env {
 		case "":
@@ -68,16 +60,6 @@ func TestDir(t *testing.T) {
 			os.Unsetenv("HOME")
 		default:
 			os.Setenv("HOME", tt.env)
-		}
-
-		switch tt.home {
-		case "":
-			// nothing to do
-		case "empty":
-			usrHome = ""
-			usr.HomeDir = testHomeDir
-		default:
-			usrHome = tt.home
 		}
 
 		t.Run(tt.name, func(t *testing.T) {
