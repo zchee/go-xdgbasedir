@@ -271,7 +271,7 @@ func TestRuntimeDir(t *testing.T) {
 func TestNativeMode(t *testing.T) {
 	// skip test if not darwin
 	if runtime.GOOS != "darwin" {
-		return
+		t.Skip("native mode for darwin only")
 	}
 
 	Mode = Native
