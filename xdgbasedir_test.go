@@ -7,6 +7,7 @@ package xdgbasedir
 import (
 	"os"
 	"path/filepath"
+	"runtime"
 	"strconv"
 	"testing"
 
@@ -78,6 +79,10 @@ func TestConfigHome(t *testing.T) {
 		os.Unsetenv("XDG_CONFIG_HOME")
 		if tt.env != "" {
 			os.Setenv("XDG_CONFIG_HOME", tt.env)
+		} else {
+			if runtime.GOOS == "darwin" {
+				tt.want = filepath.Join(home.Dir(), ".config")
+			}
 		}
 		t.Run(tt.name, func(t *testing.T) {
 			if got := ConfigHome(); got != tt.want {
@@ -162,7 +167,14 @@ func TestConfigDirs(t *testing.T) {
 }
 
 func TestCacheHome(t *testing.T) {
-	defaultCacheHome := filepath.Join(home.Dir(), ".cache")
+	var defaultCacheHome string
+	switch runtime.GOOS {
+	case "darwin":
+		defaultCacheHome = filepath.Join(home.Dir(), "Library", "Caches")
+	default:
+		defaultCacheHome = filepath.Join(home.Dir(), ".cache")
+	}
+
 	tests := []struct {
 		name string
 		env  string

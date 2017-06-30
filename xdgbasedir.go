@@ -20,12 +20,32 @@
 package xdgbasedir
 
 import (
+	"fmt"
 	"os"
-	"path/filepath"
-	"strconv"
-
-	"github.com/zchee/go-xdgbasedir/home"
 )
+
+type mode int
+
+const (
+	// Unix unix mode directory structure.
+	Unix mode = iota
+	// Native native mode directory structure.
+	Native
+)
+
+func (m mode) String() string {
+	switch m {
+	case Native:
+		return "Native"
+	case Unix:
+		return "Unix"
+	default:
+		return fmt.Sprintf("mode (%d)", m)
+	}
+}
+
+// Mode mode of directory structure. This config only available darwin.
+var Mode mode
 
 // DataHome return the XDG_DATA_HOME based directory path.
 //
@@ -35,7 +55,7 @@ func DataHome() string {
 	if dataHome := os.Getenv("XDG_DATA_HOME"); dataHome != "" {
 		return dataHome
 	}
-	return filepath.Join(home.Dir(), ".local", "share")
+	return dataHome()
 }
 
 // ConfigHome return the XDG_CONFIG_HOME based directory path.
@@ -46,7 +66,7 @@ func ConfigHome() string {
 	if configHome := os.Getenv("XDG_CONFIG_HOME"); configHome != "" {
 		return configHome
 	}
-	return filepath.Join(home.Dir(), ".config")
+	return configHome()
 }
 
 // DataDirs return the XDG_DATA_DIRS based directory path.
@@ -60,7 +80,7 @@ func DataDirs() string {
 	if dataDirs := os.Getenv("XDG_DATA_DIRS"); dataDirs != "" {
 		return dataDirs
 	}
-	return filepath.Join(string(filepath.Separator), "usr", "local", "share", string(filepath.ListSeparator), "usr", "share")
+	return dataDirs()
 }
 
 // ConfigDirs return the XDG_CONFIG_DIRS based directory path.
@@ -74,7 +94,7 @@ func ConfigDirs() string {
 	if configDirs := os.Getenv("XDG_CONFIG_DIRS"); configDirs != "" {
 		return configDirs
 	}
-	return filepath.Join(string(filepath.Separator), "etc", "xdg")
+	return configDirs()
 }
 
 // CacheHome return the XDG_CACHE_HOME based directory path.
@@ -86,12 +106,12 @@ func ConfigDirs() string {
 // Apple's "File System Programming Guide" describe the this directory should be used if users cache files.
 // However, some user who is using the macOS as Unix-like prefers $HOME/.cache.
 // xref:
-//  https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/MacOSXDirectories/MacOSXDirectories.html#//apple_ref/doc/uid/TP40010672-CH10-SW1
+//  https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/MacOSXDirectories/MacOSXDirectories.html
 func CacheHome() string {
 	if cacheHome := os.Getenv("XDG_CACHE_HOME"); cacheHome != "" {
 		return cacheHome
 	}
-	return filepath.Join(home.Dir(), ".cache")
+	return cacheHome()
 }
 
 // RuntimeDir return the XDG_RUNTIME_DIR based directory path.
@@ -108,5 +128,5 @@ func RuntimeDir() string {
 	if runtimeDir := os.Getenv("XDG_RUNTIME_DIR"); runtimeDir != "" {
 		return runtimeDir
 	}
-	return filepath.Join(string(filepath.Separator), "run", "user", strconv.Itoa(os.Getuid()))
+	return runtimeDir()
 }
