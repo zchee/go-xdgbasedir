@@ -43,8 +43,6 @@ func initDir() {
 		defaultConfigDirs = defaultConfigHome
 		defaultCacheHome = filepath.Join(home.Dir(), "Library", "Caches")
 		defaultRuntimeDir = defaultDataHome
-	default:
-		// nothing to do
 	}
 	cached = true
 }
