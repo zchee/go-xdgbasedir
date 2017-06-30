@@ -6,7 +6,7 @@ shallow_clone: true
 environment:
   GOPATH: C:\gopath
   GO_VERSION: 1.8.3
-  PATH: "C:\go\bin;C:\gopath\bin;%PATH%;%PYTHON%;%PYTHON%\Scripts"
+  PATH: C:\go\bin;C:\gopath\bin;%PATH%;%PYTHON%;%PYTHON%\Scripts
 
 install:
   - rmdir C:\go /s /q
