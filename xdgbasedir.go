@@ -52,8 +52,8 @@ var Mode mode
 // $XDG_DATA_HOME defines the base directory relative to which user specific data files should be stored.
 // If $XDG_DATA_HOME is either not set or empty, a default equal to $HOME/.local/share should be used.
 func DataHome() string {
-	if dataHome := os.Getenv("XDG_DATA_HOME"); dataHome != "" {
-		return dataHome
+	if env := os.Getenv("XDG_DATA_HOME"); env != "" {
+		return env
 	}
 	return dataHome()
 }
@@ -63,8 +63,8 @@ func DataHome() string {
 // $XDG_CONFIG_HOME defines the base directory relative to which user specific configuration files should be stored.
 // If $XDG_CONFIG_HOME is either not set or empty, a default equal to $HOME/.config should be used.
 func ConfigHome() string {
-	if configHome := os.Getenv("XDG_CONFIG_HOME"); configHome != "" {
-		return configHome
+	if env := os.Getenv("XDG_CONFIG_HOME"); env != "" {
+		return env
 	}
 	return configHome()
 }
@@ -77,8 +77,8 @@ func ConfigHome() string {
 // TODO(zchee): XDG_DATA_DIRS should be seperated with a colon, We should change return type to the []string
 // which colon seperated value instead of string?
 func DataDirs() string {
-	if dataDirs := os.Getenv("XDG_DATA_DIRS"); dataDirs != "" {
-		return dataDirs
+	if env := os.Getenv("XDG_DATA_DIRS"); env != "" {
+		return env
 	}
 	return dataDirs()
 }
@@ -91,8 +91,8 @@ func DataDirs() string {
 // TODO(zchee): XDG_CONFIG_DIRS should be seperated with a colon, We should change return type to the []string
 // which colon seperated value instead of string?
 func ConfigDirs() string {
-	if configDirs := os.Getenv("XDG_CONFIG_DIRS"); configDirs != "" {
-		return configDirs
+	if env := os.Getenv("XDG_CONFIG_DIRS"); env != "" {
+		return env
 	}
 	return configDirs()
 }
@@ -108,8 +108,8 @@ func ConfigDirs() string {
 // xref:
 //  https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/MacOSXDirectories/MacOSXDirectories.html
 func CacheHome() string {
-	if cacheHome := os.Getenv("XDG_CACHE_HOME"); cacheHome != "" {
-		return cacheHome
+	if env := os.Getenv("XDG_CACHE_HOME"); env != "" {
+		return env
 	}
 	return cacheHome()
 }
@@ -125,8 +125,8 @@ func CacheHome() string {
 // xref:
 //	http://serverfault.com/questions/388840/good-default-for-xdg-runtime-dir/727994#727994
 func RuntimeDir() string {
-	if runtimeDir := os.Getenv("XDG_RUNTIME_DIR"); runtimeDir != "" {
-		return runtimeDir
+	if env := os.Getenv("XDG_RUNTIME_DIR"); env != "" {
+		return env
 	}
 	return runtimeDir()
 }
