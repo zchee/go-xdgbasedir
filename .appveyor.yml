@@ -19,9 +19,13 @@ build: false
 
 before_test:
   - go get -u github.com/golang/lint/golint
-  - go get -u github.com/haya14busa/goverage
 test_script:
-  - goverage -v -race -coverprofile=coverage.txt -covermode=atomic ./...
+  - go test -v -race -cover -covermode=atomic -coverprofile=coverage.txt.tmp .
+  - cat coverage.txt.tmp > coverage.txt
+  - rm -f coverage.txt.tmp
+  - go test -v -race -cover -covermode=atomic -coverprofile=coverage.txt.tmp ./home
+  - cat coverage.txt.tmp >> coverage.txt
+  - rm -f coverage.txt.tmp
 after_test:
   - pip install -U codecov
   - codecov -f coverage.txt
