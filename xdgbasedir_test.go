@@ -15,34 +15,39 @@ import (
 )
 
 func TestDataHome(t *testing.T) {
-	defaultDataHome := filepath.Join(home.Dir(), ".local", "share")
+	var testDefaultDataHome string
+	switch runtime.GOOS {
+	case "windows":
+		testDefaultDataHome = filepath.Join(home.Dir(), "AppData", "Local")
+	default:
+		testDefaultDataHome = filepath.Join(home.Dir(), ".local", "share")
+	}
 
 	tests := []struct {
 		name string
 		env  string
 		want string
+		mode mode
 	}{
 		{
-			name: "Set env based specification",
-			env:  defaultDataHome,
-			want: defaultDataHome,
+			name: "set env based specification",
+			env:  testDefaultDataHome,
+			want: testDefaultDataHome,
 		},
 		{
-			name: "Set env based different from specification",
+			name: "set env based different from specification",
 			env:  filepath.Join(string(filepath.Separator), "tmp", "xdg", ".local", "share"),
 			want: filepath.Join(string(filepath.Separator), "tmp", "xdg", ".local", "share"),
 		},
 		{
-			name: "Empty env",
+			name: "empty env",
 			env:  "",
-			want: defaultDataHome,
+			want: testDefaultDataHome,
 		},
 	}
 	for _, tt := range tests {
-		os.Unsetenv("XDG_DATA_HOME")
-		if tt.env != "" {
-			os.Setenv("XDG_DATA_HOME", tt.env)
-		}
+		os.Setenv("XDG_DATA_HOME", tt.env)
+
 		t.Run(tt.name, func(t *testing.T) {
 			if got := DataHome(); got != tt.want {
 				t.Errorf("DataHome() = %v, want %v", got, tt.want)
@@ -52,7 +57,13 @@ func TestDataHome(t *testing.T) {
 }
 
 func TestConfigHome(t *testing.T) {
-	defaultConfigHome := filepath.Join(home.Dir(), ".config")
+	var testDefaultConfigHome string
+	switch runtime.GOOS {
+	case "windows":
+		testDefaultConfigHome = filepath.Join(home.Dir(), "AppData", "Local")
+	default:
+		testDefaultConfigHome = filepath.Join(home.Dir(), ".config")
+	}
 
 	tests := []struct {
 		name string
@@ -60,30 +71,24 @@ func TestConfigHome(t *testing.T) {
 		want string
 	}{
 		{
-			name: "Set env based specification",
-			env:  defaultConfigHome,
-			want: defaultConfigHome,
+			name: "set env based specification",
+			env:  testDefaultConfigHome,
+			want: testDefaultConfigHome,
 		},
 		{
-			name: "Set env based different from specification",
+			name: "set env based different from specification",
 			env:  filepath.Join(string(filepath.Separator), "tmp", "config"),
 			want: filepath.Join(string(filepath.Separator), "tmp", "config"),
 		},
 		{
-			name: "Empty env",
+			name: "empty env",
 			env:  "",
-			want: defaultConfigHome,
+			want: testDefaultConfigHome,
 		},
 	}
 	for _, tt := range tests {
-		os.Unsetenv("XDG_CONFIG_HOME")
-		if tt.env != "" {
-			os.Setenv("XDG_CONFIG_HOME", tt.env)
-		} else {
-			if runtime.GOOS == "darwin" {
-				tt.want = filepath.Join(home.Dir(), ".config")
-			}
-		}
+		os.Setenv("XDG_CONFIG_HOME", tt.env)
+
 		t.Run(tt.name, func(t *testing.T) {
 			if got := ConfigHome(); got != tt.want {
 				t.Errorf("ConfigHome() = %v, want %v", got, tt.want)
@@ -93,7 +98,13 @@ func TestConfigHome(t *testing.T) {
 }
 
 func TestDataDirs(t *testing.T) {
-	defaultDataDirs := filepath.Join(string(filepath.Separator), "usr", "local", "share", string(filepath.ListSeparator), "usr", "share")
+	var testDefaultDataDirs string
+	switch runtime.GOOS {
+	case "windows":
+		testDefaultDataDirs = filepath.Join(home.Dir(), "AppData", "Local")
+	default:
+		testDefaultDataDirs = filepath.Join("/usr", "local", "share") + string(filepath.ListSeparator) + filepath.Join("/usr", "share")
+	}
 
 	tests := []struct {
 		name string
@@ -101,26 +112,24 @@ func TestDataDirs(t *testing.T) {
 		want string
 	}{
 		{
-			name: "Set env based specification",
-			env:  defaultDataDirs,
-			want: defaultDataDirs,
+			name: "set env based specification",
+			env:  testDefaultDataDirs,
+			want: testDefaultDataDirs,
 		},
 		{
-			name: "Set env based different from specification",
-			env:  filepath.Join(string(filepath.Separator), "opt", "local", "share"),
-			want: filepath.Join(string(filepath.Separator), "opt", "local", "share"),
+			name: "set env based different from specification",
+			env:  filepath.Join("/opt", "local", "share"),
+			want: filepath.Join("/opt", "local", "share"),
 		},
 		{
-			name: "Empty env",
+			name: "empty env",
 			env:  "",
-			want: defaultDataDirs,
+			want: testDefaultDataDirs,
 		},
 	}
 	for _, tt := range tests {
-		os.Unsetenv("XDG_DATA_DIRS")
-		if tt.env != "" {
-			os.Setenv("XDG_DATA_DIRS", tt.env)
-		}
+		os.Setenv("XDG_DATA_DIRS", tt.env)
+
 		t.Run(tt.name, func(t *testing.T) {
 			if got := DataDirs(); got != tt.want {
 				t.Errorf("DataDirs() = %v, want %v", got, tt.want)
@@ -130,7 +139,13 @@ func TestDataDirs(t *testing.T) {
 }
 
 func TestConfigDirs(t *testing.T) {
-	defaultConfigDirs := filepath.Join(string(filepath.Separator), "etc", "xdg")
+	var testDefaultConfigDirs string
+	switch runtime.GOOS {
+	case "windows":
+		testDefaultConfigDirs = filepath.Join(home.Dir(), "AppData", "Local")
+	default:
+		testDefaultConfigDirs = filepath.Join("/etc", "xdg")
+	}
 
 	tests := []struct {
 		name string
@@ -138,19 +153,19 @@ func TestConfigDirs(t *testing.T) {
 		want string
 	}{
 		{
-			name: "Set env based specification",
-			env:  defaultConfigDirs,
-			want: defaultConfigDirs,
+			name: "set env based specification",
+			env:  testDefaultConfigDirs,
+			want: testDefaultConfigDirs,
 		},
 		{
-			name: "Set env based different from specification",
+			name: "set env based different from specification",
 			env:  filepath.Join(string(filepath.Separator), "var", "etc", "xdg"),
 			want: filepath.Join(string(filepath.Separator), "var", "etc", "xdg"),
 		},
 		{
-			name: "Empty env",
+			name: "empty env",
 			env:  "",
-			want: defaultConfigDirs,
+			want: testDefaultConfigDirs,
 		},
 	}
 	for _, tt := range tests {
@@ -167,12 +182,12 @@ func TestConfigDirs(t *testing.T) {
 }
 
 func TestCacheHome(t *testing.T) {
-	var defaultCacheHome string
+	var testDefaultCacheHome string
 	switch runtime.GOOS {
-	case "darwin":
-		defaultCacheHome = filepath.Join(home.Dir(), "Library", "Caches")
+	case "windows":
+		testDefaultCacheHome = filepath.Join(home.Dir(), "AppData", "Local", "cache")
 	default:
-		defaultCacheHome = filepath.Join(home.Dir(), ".cache")
+		testDefaultCacheHome = filepath.Join(home.Dir(), ".cache")
 	}
 
 	tests := []struct {
@@ -181,26 +196,24 @@ func TestCacheHome(t *testing.T) {
 		want string
 	}{
 		{
-			name: "Set env based specification",
-			env:  defaultCacheHome,
-			want: defaultCacheHome,
+			name: "set env based specification",
+			env:  testDefaultCacheHome,
+			want: testDefaultCacheHome,
 		},
 		{
-			name: "Set env based different from specification",
+			name: "set env based different from specification",
 			env:  filepath.Join(string(filepath.Separator), "tmp", "cache"),
 			want: filepath.Join(string(filepath.Separator), "tmp", "cache"),
 		},
 		{
-			name: "Empty env",
+			name: "empty env",
 			env:  "",
-			want: defaultCacheHome,
+			want: testDefaultCacheHome,
 		},
 	}
 	for _, tt := range tests {
-		os.Unsetenv("XDG_CACHE_HOME")
-		if tt.env != "" {
-			os.Setenv("XDG_CACHE_HOME", tt.env)
-		}
+		os.Setenv("XDG_CACHE_HOME", tt.env)
+
 		t.Run(tt.name, func(t *testing.T) {
 			if got := CacheHome(); got != tt.want {
 				t.Errorf("CacheHome() = %v, want %v", got, tt.want)
@@ -210,7 +223,13 @@ func TestCacheHome(t *testing.T) {
 }
 
 func TestRuntimeDir(t *testing.T) {
-	defaultRuntimeDir := filepath.Join(string(filepath.Separator), "run", "user", strconv.Itoa(os.Getuid()))
+	var testDefaultRuntimeDir string
+	switch runtime.GOOS {
+	case "windows":
+		testDefaultRuntimeDir = home.Dir()
+	default:
+		testDefaultRuntimeDir = filepath.Join("/run", "user", strconv.Itoa(os.Getuid()))
+	}
 
 	tests := []struct {
 		name string
@@ -218,29 +237,81 @@ func TestRuntimeDir(t *testing.T) {
 		want string
 	}{
 		{
-			name: "Set env based specification",
-			env:  defaultRuntimeDir,
-			want: defaultRuntimeDir,
+			name: "set env based specification",
+			env:  testDefaultRuntimeDir,
+			want: testDefaultRuntimeDir,
 		},
 		{
-			name: "Set env based different from specification",
+			name: "set env based different from specification",
 			env:  filepath.Join(string(filepath.Separator), "tmp", "user", "1000"),
 			want: filepath.Join(string(filepath.Separator), "tmp", "user", "1000"),
 		},
 		{
-			name: "Empty env",
+			name: "empty env",
 			env:  "",
-			want: defaultRuntimeDir,
+			want: testDefaultRuntimeDir,
 		},
 	}
 	for _, tt := range tests {
-		os.Unsetenv("XDG_RUNTIME_DIR")
-		if tt.env != "" {
-			os.Setenv("XDG_RUNTIME_DIR", tt.env)
-		}
+		os.Setenv("XDG_RUNTIME_DIR", tt.env)
+
 		t.Run(tt.name, func(t *testing.T) {
 			if got := RuntimeDir(); got != tt.want {
 				t.Errorf("RuntimeDir() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestNativeMode(t *testing.T) {
+	// skip test if not darwin
+	if runtime.GOOS != "darwin" {
+		return
+	}
+
+	cached = false
+	Mode = Native
+
+	tests := []struct {
+		name string
+		fn   string
+		want string
+	}{
+		{
+			name: "DataHome",
+			fn:   DataHome(),
+			want: filepath.Join(home.Dir(), "Library", "Application Support"),
+		},
+		{
+			name: "ConfigHome",
+			fn:   ConfigHome(),
+			want: filepath.Join(home.Dir(), "Library", "Preferences"),
+		},
+		{
+			name: "DataDirs",
+			fn:   DataDirs(),
+			want: filepath.Join(home.Dir(), "Library", "Application Support"),
+		},
+		{
+			name: "ConfigDirs",
+			fn:   ConfigDirs(),
+			want: filepath.Join(home.Dir(), "Library", "Preferences"),
+		},
+		{
+			name: "CacheHome",
+			fn:   CacheHome(),
+			want: filepath.Join(home.Dir(), "Library", "Caches"),
+		},
+		{
+			name: "RuntimeDir",
+			fn:   RuntimeDir(),
+			want: filepath.Join(home.Dir(), "Library", "Application Support"),
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := tt.fn; got != tt.want {
+				t.Errorf("NativeMode() = %v, want %v", got, tt.want)
 			}
 		})
 	}
