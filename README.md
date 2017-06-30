@@ -56,7 +56,7 @@ func main() {
 	fmt.Println(xdgbasedir.DataHome())
 
 	// Output:
-	// "~/.local/share"
+	// "/Users/foo/.local/share"
 }
 
 ```
