@@ -34,6 +34,7 @@ func initDir() {
 			defaultCacheHome = filepath.Join(home.Dir(), ".cache")
 			defaultRuntimeDir = filepath.Join("/run", "user", strconv.Itoa(os.Getuid()))
 		case Native:
+			// ref: https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/MacOSXDirectories/MacOSXDirectories.html
 			defaultDataHome = filepath.Join(home.Dir(), "Library", "Application Support")
 			defaultConfigHome = filepath.Join(home.Dir(), "Library", "Preferences")
 			defaultDataDirs = defaultDataHome
