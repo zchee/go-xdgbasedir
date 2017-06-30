@@ -21,6 +21,7 @@ package xdgbasedir
 
 import (
 	"os"
+	"sync"
 )
 
 type mode int
@@ -37,6 +38,9 @@ const (
 // If it is set to `Unix`, it refers to the same path as linux. If it is set to `Native`, it refers to the Apple FileSystemProgrammingGuide path.
 // By default, `Unix`.
 var Mode = Unix
+
+// initOnce for run initDir once on darwin.
+var initOnce sync.Once
 
 // DataHome return the XDG_DATA_HOME based directory path.
 //

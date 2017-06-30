@@ -10,12 +10,9 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
-	"sync"
 
 	home "github.com/zchee/go-xdgbasedir/home"
 )
-
-var initOnce sync.Once
 
 var (
 	defaultDataHome   string
