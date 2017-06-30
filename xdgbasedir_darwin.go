@@ -10,10 +10,12 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
-	"sync/atomic"
+	"sync"
 
 	home "github.com/zchee/go-xdgbasedir/home"
 )
+
+var initOnce sync.Once
 
 var (
 	defaultDataHome   string
@@ -25,28 +27,24 @@ var (
 )
 
 func initDir() {
-	if atomic.LoadInt32(&cached) != 0 {
-		return
-	}
-
-	switch Mode {
-	case Unix:
-		defaultDataHome = filepath.Join(home.Dir(), ".local", "share")
-		defaultConfigHome = filepath.Join(home.Dir(), ".config")
-		defaultDataDirs = filepath.Join("/usr", "local", "share") + string(filepath.ListSeparator) + filepath.Join("/usr", "share")
-		defaultConfigDirs = filepath.Join("/etc", "xdg")
-		defaultCacheHome = filepath.Join(home.Dir(), ".cache")
-		defaultRuntimeDir = filepath.Join("/run", "user", strconv.Itoa(os.Getuid()))
-	case Native:
-		defaultDataHome = filepath.Join(home.Dir(), "Library", "Application Support")
-		defaultConfigHome = filepath.Join(home.Dir(), "Library", "Preferences")
-		defaultDataDirs = defaultDataHome
-		defaultConfigDirs = defaultConfigHome
-		defaultCacheHome = filepath.Join(home.Dir(), "Library", "Caches")
-		defaultRuntimeDir = defaultDataHome
-	}
-
-	atomic.AddInt32(&cached, 1)
+	initOnce.Do(func() {
+		switch Mode {
+		case Unix:
+			defaultDataHome = filepath.Join(home.Dir(), ".local", "share")
+			defaultConfigHome = filepath.Join(home.Dir(), ".config")
+			defaultDataDirs = filepath.Join("/usr", "local", "share") + string(filepath.ListSeparator) + filepath.Join("/usr", "share")
+			defaultConfigDirs = filepath.Join("/etc", "xdg")
+			defaultCacheHome = filepath.Join(home.Dir(), ".cache")
+			defaultRuntimeDir = filepath.Join("/run", "user", strconv.Itoa(os.Getuid()))
+		case Native:
+			defaultDataHome = filepath.Join(home.Dir(), "Library", "Application Support")
+			defaultConfigHome = filepath.Join(home.Dir(), "Library", "Preferences")
+			defaultDataDirs = defaultDataHome
+			defaultConfigDirs = defaultConfigHome
+			defaultCacheHome = filepath.Join(home.Dir(), "Library", "Caches")
+			defaultRuntimeDir = defaultDataHome
+		}
+	})
 }
 
 func dataHome() string {

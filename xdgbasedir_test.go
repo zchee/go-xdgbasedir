@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"strconv"
+	"sync"
 	"testing"
 
 	"github.com/zchee/go-xdgbasedir/home"
@@ -273,8 +274,8 @@ func TestNativeMode(t *testing.T) {
 		return
 	}
 
-	cached = 0
 	Mode = Native
+	initOnce = sync.Once{}
 
 	tests := []struct {
 		name string

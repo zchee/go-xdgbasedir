@@ -38,9 +38,6 @@ const (
 // By default, `Unix`.
 var Mode = Unix
 
-// cached for cache mode for darwin.
-var cached int32
-
 // DataHome return the XDG_DATA_HOME based directory path.
 //
 // $XDG_DATA_HOME defines the base directory relative to which user specific data files should be stored.
