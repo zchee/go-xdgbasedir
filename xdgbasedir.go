@@ -45,7 +45,10 @@ func (m mode) String() string {
 }
 
 // Mode mode of directory structure. This config only available darwin.
-var Mode mode
+//
+// If it is set to `Unix`, it refers to the same path as linux. If it is set to `Native`, it refers to the Apple FileSystemProgrammingGuide path.
+// By default, `Unix`.
+var Mode = Unix
 
 // cached for cache mode for darwin.
 var cached bool
