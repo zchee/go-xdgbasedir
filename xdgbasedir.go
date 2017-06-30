@@ -20,7 +20,6 @@
 package xdgbasedir
 
 import (
-	"fmt"
 	"os"
 )
 
@@ -32,17 +31,6 @@ const (
 	// Native native mode directory structure.
 	Native
 )
-
-func (m mode) String() string {
-	switch m {
-	case Native:
-		return "Native"
-	case Unix:
-		return "Unix"
-	default:
-		return fmt.Sprintf("mode (%d)", m)
-	}
-}
 
 // Mode mode of directory structure. This config only available darwin.
 //
