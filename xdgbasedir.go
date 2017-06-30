@@ -47,6 +47,9 @@ func (m mode) String() string {
 // Mode mode of directory structure. This config only available darwin.
 var Mode mode
 
+// cached for cache mode for darwin.
+var cached bool
+
 // DataHome return the XDG_DATA_HOME based directory path.
 //
 // $XDG_DATA_HOME defines the base directory relative to which user specific data files should be stored.

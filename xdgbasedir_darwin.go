@@ -21,12 +21,10 @@ var (
 	defaultConfigDirs string
 	defaultCacheHome  string
 	defaultRuntimeDir string
-
-	done bool
 )
 
 func initDir() {
-	if done {
+	if cached {
 		return
 	}
 
@@ -48,7 +46,7 @@ func initDir() {
 	default:
 		// nothing to do
 	}
-	done = true
+	cached = true
 }
 
 func dataHome() string {
