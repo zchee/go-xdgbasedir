@@ -29,12 +29,12 @@ func TestDir(t *testing.T) {
 			want: testHomeDir,
 		},
 		{
-			name: "Set different $HOME env",
+			name: "set different $HOME env",
 			env:  filepath.FromSlash(filepath.Join("/tmp", "home")),
 			want: filepath.FromSlash(filepath.Join("/tmp", "home")),
 		},
 		{
-			name: "Empty HOME env",
+			name: "empty $HOME env",
 			env:  "empty",
 			want: testHomeDir,
 		},
