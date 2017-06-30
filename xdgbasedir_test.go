@@ -169,10 +169,8 @@ func TestConfigDirs(t *testing.T) {
 		},
 	}
 	for _, tt := range tests {
-		os.Unsetenv("XDG_CONFIG_DIRS")
-		if tt.env != "" {
-			os.Setenv("XDG_CONFIG_DIRS", tt.env)
-		}
+		os.Setenv("XDG_CONFIG_DIRS", tt.env)
+
 		t.Run(tt.name, func(t *testing.T) {
 			if got := ConfigDirs(); got != tt.want {
 				t.Errorf("ConfigDirs() = %v, want %v", got, tt.want)
