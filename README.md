@@ -8,12 +8,25 @@ A package xdgbasedir implements a XDG Base Directory Specification for Go.
 | **godoc.org**                               | **codecov.io**                              |
 | [![godoc.org][godoc-badge]][godoc]          | [![codecov.io][codecov-badge]][codecov]     |
 
-- freedesktop.org XDG Base Directory Specification reference:
+## freedesktop.org XDG Base Directory Specification reference:
+
   - https://specifications.freedesktop.org/basedir-spec/0.8/
   - https://specifications.freedesktop.org/basedir-spec/latest/
-- Current supported specification version:
-  - [![XDGBaseDirSpecVersion](https://img.shields.io/badge/%20XDG%20Base%20Dir%20-%200.8%20-4F73B3.svg?style=flat-square)]()
+
+## Current specification version:
+
   - 0.8
+
+## Badge
+
+powered by [shields.io](https://shields.io).
+
+[![XDGBaseDirSpecVersion](https://img.shields.io/badge/%20XDG%20Base%20Dir%20-%200.8%20-blue.svg?style=flat-square)]()
+
+markdown:
+```md
+[![XDGBaseDirSpecVersion](https://img.shields.io/badge/%20XDG%20Base%20Dir%20-%200.8%20-blue.svg?style=flat-square)]()
+```
 
 
 [travis-ci]: https://travis-ci.org/zchee/go-xdgbasedir
