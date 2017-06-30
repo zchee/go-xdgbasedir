@@ -22,9 +22,10 @@ before_script:
   - go get -u github.com/golang/lint/golint
 script:
   - |
+    set -e
     touch coverage.txt
     for pkg in $(go list ./... | grep -v vendor); do
-      go test -v -race -cover -covermode=atomic -coverprofile=coverage.txt.tmp "$pkg" || false
+      go test -v -race -cover -covermode=atomic -coverprofile=coverage.txt.tmp "$pkg"
       if [[ -f coverage.txt.tmp ]]; then
         cat coverage.txt.tmp >> coverage.txt
         rm -f coverage.txt.tmp
