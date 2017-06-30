@@ -269,7 +269,7 @@ func TestNativeMode(t *testing.T) {
 		return
 	}
 
-	cached = false
+	cached = 0
 	Mode = Native
 
 	tests := []struct {

@@ -51,7 +51,7 @@ func (m mode) String() string {
 var Mode = Unix
 
 // cached for cache mode for darwin.
-var cached bool
+var cached int32
 
 // DataHome return the XDG_DATA_HOME based directory path.
 //

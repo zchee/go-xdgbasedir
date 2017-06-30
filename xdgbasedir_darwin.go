@@ -10,6 +10,7 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+	"sync/atomic"
 
 	home "github.com/zchee/go-xdgbasedir/home"
 )
@@ -24,7 +25,7 @@ var (
 )
 
 func initDir() {
-	if cached {
+	if atomic.LoadInt32(&cached) != 0 {
 		return
 	}
 
@@ -44,7 +45,8 @@ func initDir() {
 		defaultCacheHome = filepath.Join(home.Dir(), "Library", "Caches")
 		defaultRuntimeDir = defaultDataHome
 	}
-	cached = true
+
+	atomic.AddInt32(&cached, 1)
 }
 
 func dataHome() string {
