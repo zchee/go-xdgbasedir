@@ -5,31 +5,19 @@
 package home
 
 import (
-	"flag"
 	"os"
+	"os/user"
 	"path/filepath"
-	"runtime"
 	"testing"
 )
 
-var testHomeDir string
-
-func TestMain(m *testing.M) {
-	flag.Parse()
-
-	switch runtime.GOOS {
-	case "darwin":
-		testHomeDir = filepath.Join("/Users", os.Getenv("USER"))
-	case "linux":
-		testHomeDir = filepath.Join("/home", os.Getenv("USER"))
-	case "windows":
-		testHomeDir = filepath.FromSlash(filepath.Join("C:/Users", os.Getenv("USERNAME")))
-	}
-
-	os.Exit(m.Run())
-}
-
 func TestDir(t *testing.T) {
+	u, err := user.Current()
+	if err != nil {
+		t.Fatal(err)
+	}
+	testHomeDir := u.HomeDir
+
 	tests := []struct {
 		name string
 		env  string
