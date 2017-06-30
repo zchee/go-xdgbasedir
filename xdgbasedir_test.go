@@ -47,9 +47,8 @@ func TestDataHome(t *testing.T) {
 		},
 	}
 	for _, tt := range tests {
+		os.Setenv("XDG_DATA_HOME", tt.env)
 		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel()
-			os.Setenv("XDG_DATA_HOME", tt.env)
 			if got := DataHome(); got != tt.want {
 				t.Errorf("DataHome() = %v, want %v", got, tt.want)
 			}
@@ -88,9 +87,8 @@ func TestConfigHome(t *testing.T) {
 		},
 	}
 	for _, tt := range tests {
+		os.Setenv("XDG_CONFIG_HOME", tt.env)
 		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel()
-			os.Setenv("XDG_CONFIG_HOME", tt.env)
 			if got := ConfigHome(); got != tt.want {
 				t.Errorf("ConfigHome() = %v, want %v", got, tt.want)
 			}
@@ -129,9 +127,8 @@ func TestDataDirs(t *testing.T) {
 		},
 	}
 	for _, tt := range tests {
+		os.Setenv("XDG_DATA_DIRS", tt.env)
 		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel()
-			os.Setenv("XDG_DATA_DIRS", tt.env)
 			if got := DataDirs(); got != tt.want {
 				t.Errorf("DataDirs() = %v, want %v", got, tt.want)
 			}
@@ -170,9 +167,8 @@ func TestConfigDirs(t *testing.T) {
 		},
 	}
 	for _, tt := range tests {
+		os.Setenv("XDG_CONFIG_DIRS", tt.env)
 		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel()
-			os.Setenv("XDG_CONFIG_DIRS", tt.env)
 			if got := ConfigDirs(); got != tt.want {
 				t.Errorf("ConfigDirs() = %v, want %v", got, tt.want)
 			}
@@ -211,9 +207,8 @@ func TestCacheHome(t *testing.T) {
 		},
 	}
 	for _, tt := range tests {
+		os.Setenv("XDG_CACHE_HOME", tt.env)
 		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel()
-			os.Setenv("XDG_CACHE_HOME", tt.env)
 			if got := CacheHome(); got != tt.want {
 				t.Errorf("CacheHome() = %v, want %v", got, tt.want)
 			}
@@ -252,9 +247,8 @@ func TestRuntimeDir(t *testing.T) {
 		},
 	}
 	for _, tt := range tests {
+		os.Setenv("XDG_RUNTIME_DIR", tt.env)
 		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel()
-			os.Setenv("XDG_RUNTIME_DIR", tt.env)
 			if got := RuntimeDir(); got != tt.want {
 				t.Errorf("RuntimeDir() = %v, want %v", got, tt.want)
 			}
@@ -309,7 +303,6 @@ func TestNativeMode(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			t.Parallel()
 			if got := tt.fn; got != tt.want {
 				t.Errorf("NativeMode() = %v, want %v", got, tt.want)
 			}
