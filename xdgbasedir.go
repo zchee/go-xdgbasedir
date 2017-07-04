@@ -120,7 +120,7 @@ func RuntimeDir() string {
 
 // expandUser expands shell's user home directory tilde expansion from s.
 func expandUser(s string) string {
-	if len(s) <= 2 || s[0] != '~' || !os.IsPathSeparator(s[1]) {
+	if len(s) < 2 || s[0] != '~' || !os.IsPathSeparator(s[1]) {
 		return s
 	}
 
