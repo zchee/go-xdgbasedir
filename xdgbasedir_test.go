@@ -328,12 +328,12 @@ func Test_expandUser(t *testing.T) {
 		{
 			name: "have tilda",
 			args: args{s: filepath.Join("~/tmp", ".config")},
-			want: filepath.Join(usr.HomeDir, "tmp", ".config"),
+			want: filepath.ToSlash(filepath.Join(usr.HomeDir, "tmp", ".config")),
 		},
 		{
 			name: "tilda only",
 			args: args{s: "~/"},
-			want: usr.HomeDir,
+			want: filepath.ToSlash(usr.HomeDir),
 		},
 		{
 			name: "no tilda with root",
