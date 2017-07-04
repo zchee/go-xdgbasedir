@@ -21,6 +21,8 @@ package xdgbasedir
 
 import (
 	"os"
+	"path/filepath"
+	"runtime"
 	"sync"
 )
 
@@ -48,7 +50,7 @@ var initOnce sync.Once
 // If $XDG_DATA_HOME is either not set or empty, a default equal to $HOME/.local/share should be used.
 func DataHome() string {
 	if env := os.Getenv("XDG_DATA_HOME"); env != "" {
-		return env
+		return expandUser(env)
 	}
 	return dataHome()
 }
@@ -59,7 +61,7 @@ func DataHome() string {
 // If $XDG_CONFIG_HOME is either not set or empty, a default equal to $HOME/.config should be used.
 func ConfigHome() string {
 	if env := os.Getenv("XDG_CONFIG_HOME"); env != "" {
-		return env
+		return expandUser(env)
 	}
 	return configHome()
 }
@@ -71,7 +73,7 @@ func ConfigHome() string {
 // If $XDG_DATA_DIRS is either not set or empty, a value equal to /usr/local/share/:/usr/share/ should be used.
 func DataDirs() string {
 	if env := os.Getenv("XDG_DATA_DIRS"); env != "" {
-		return env
+		return expandUser(env)
 	}
 	return dataDirs()
 }
@@ -83,7 +85,7 @@ func DataDirs() string {
 // If $XDG_CONFIG_DIRS is either not set or empty, a value equal to /etc/xdg should be used.
 func ConfigDirs() string {
 	if env := os.Getenv("XDG_CONFIG_DIRS"); env != "" {
-		return env
+		return expandUser(env)
 	}
 	return configDirs()
 }
@@ -94,7 +96,7 @@ func ConfigDirs() string {
 // If $XDG_CACHE_HOME is either not set or empty, a default equal to $HOME/.cache should be used.
 func CacheHome() string {
 	if env := os.Getenv("XDG_CACHE_HOME"); env != "" {
-		return env
+		return expandUser(env)
 	}
 	return cacheHome()
 }
@@ -111,7 +113,37 @@ func CacheHome() string {
 //	http://serverfault.com/questions/388840/good-default-for-xdg-runtime-dir/727994#727994
 func RuntimeDir() string {
 	if env := os.Getenv("XDG_RUNTIME_DIR"); env != "" {
-		return env
+		return expandUser(env)
 	}
 	return runtimeDir()
+}
+
+// expandUser expands shell's user home directory tilde expansion from s.
+func expandUser(s string) string {
+	if len(s) <= 2 || s[0] != '~' || !os.IsPathSeparator(s[1]) {
+		return s
+	}
+
+	env := "HOME"
+	if runtime.GOOS == "windows" {
+		env = "USERPROFILE"
+	} else if runtime.GOOS == "plan9" {
+		env = "home"
+	}
+	home := os.Getenv(env)
+	if home == "" {
+		return s
+	}
+
+	if runtime.GOOS == "windows" {
+		s = filepath.ToSlash(filepath.Join(home, s[2:]))
+	} else {
+		s = filepath.Join(home, s[2:])
+	}
+	return os.Expand(s, func(env string) string {
+		if env == "HOME" {
+			return home
+		}
+		return os.Getenv(env)
+	})
 }

@@ -6,6 +6,7 @@ package xdgbasedir
 
 import (
 	"os"
+	"os/user"
 	"path/filepath"
 	"runtime"
 	"strconv"
@@ -305,6 +306,45 @@ func TestNativeMode(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := tt.fn; got != tt.want {
 				t.Errorf("NativeMode() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_expandUser(t *testing.T) {
+	usr, err := user.Current()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	type args struct {
+		s string
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{
+			name: "have tilda",
+			args: args{s: filepath.Join("~/tmp", ".config")},
+			want: filepath.Join(usr.HomeDir, "tmp", ".config"),
+		},
+		{
+			name: "no tilda with root",
+			args: args{s: filepath.Join("/tmp", ".config")},
+			want: filepath.Join("/tmp", ".config"),
+		},
+		{
+			name: "no tilda with related",
+			args: args{s: filepath.Join("test", "related")},
+			want: filepath.Join("test", "related"),
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := expandUser(tt.args.s); got != tt.want {
+				t.Errorf("expandUser(%v) = %v, want %v", tt.args.s, got, tt.want)
 			}
 		})
 	}
