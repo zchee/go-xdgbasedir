@@ -38,8 +38,8 @@ func TestDataHome(t *testing.T) {
 		},
 		{
 			name: "set env based different from specification",
-			env:  filepath.Join(string(filepath.Separator), "tmp", "xdg", ".local", "share"),
-			want: filepath.Join(string(filepath.Separator), "tmp", "xdg", ".local", "share"),
+			env:  filepath.Join("/tmp", "xdg", ".local", "share"),
+			want: filepath.Join("/tmp", "xdg", ".local", "share"),
 		},
 		{
 			name: "empty env",
@@ -78,8 +78,8 @@ func TestConfigHome(t *testing.T) {
 		},
 		{
 			name: "set env based different from specification",
-			env:  filepath.Join(string(filepath.Separator), "tmp", "config"),
-			want: filepath.Join(string(filepath.Separator), "tmp", "config"),
+			env:  filepath.Join("/tmp", "config"),
+			want: filepath.Join("/tmp", "config"),
 		},
 		{
 			name: "empty env",
@@ -158,8 +158,8 @@ func TestConfigDirs(t *testing.T) {
 		},
 		{
 			name: "set env based different from specification",
-			env:  filepath.Join(string(filepath.Separator), "var", "etc", "xdg"),
-			want: filepath.Join(string(filepath.Separator), "var", "etc", "xdg"),
+			env:  filepath.Join("/var", "etc", "xdg"),
+			want: filepath.Join("/var", "etc", "xdg"),
 		},
 		{
 			name: "empty env",
@@ -198,8 +198,8 @@ func TestCacheHome(t *testing.T) {
 		},
 		{
 			name: "set env based different from specification",
-			env:  filepath.Join(string(filepath.Separator), "tmp", "cache"),
-			want: filepath.Join(string(filepath.Separator), "tmp", "cache"),
+			env:  filepath.Join("/tmp", "cache"),
+			want: filepath.Join("/tmp", "cache"),
 		},
 		{
 			name: "empty env",
@@ -238,8 +238,8 @@ func TestRuntimeDir(t *testing.T) {
 		},
 		{
 			name: "set env based different from specification",
-			env:  filepath.Join(string(filepath.Separator), "tmp", "user", "1000"),
-			want: filepath.Join(string(filepath.Separator), "tmp", "user", "1000"),
+			env:  filepath.Join("/tmp", "user", "1000"),
+			want: filepath.Join("/tmp", "user", "1000"),
 		},
 		{
 			name: "empty env",
