@@ -80,7 +80,7 @@ func main() {
 	fmt.Println(xdgbasedir.DataHome())
 
 	// Output:
-	// "/Users/zchee/Library/Application Support"
+	// "/Users/foo/Library/Application Support"
 }
 ```
 
