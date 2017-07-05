@@ -50,11 +50,8 @@ import (
 	"github.com/zchee/go-xdgbasedir"
 )
 
-func init() {
-	xdgbasedir.Mode = xdgbasedir.Unix
-}
-
 func main() {
+	xdgbasedir.Mode = xdgbasedir.Unix // optional, default is Unix
 	fmt.Println(xdgbasedir.DataHome())
 
 	// Output:
