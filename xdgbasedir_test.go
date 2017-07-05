@@ -354,3 +354,45 @@ func Test_expandUser(t *testing.T) {
 		})
 	}
 }
+
+func BenchmarkDataHome(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		DataHome()
+	}
+}
+
+func BenchmarkConfigHome(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		ConfigHome()
+	}
+}
+
+func BenchmarkDataDirs(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		DataDirs()
+	}
+}
+
+func BenchmarkConfigDirs(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		ConfigHome()
+	}
+}
+
+func BenchmarkCacheHome(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		CacheHome()
+	}
+}
+
+func BenchmarkRuntimeDir(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		RuntimeDir()
+	}
+}
+
+func Benchmark_expandUser(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		expandUser("")
+	}
+}
