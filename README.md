@@ -37,6 +37,8 @@ We prepared a `Mode` for users using macOS like Unix. It's `darwin` GOOS specifi
 If it is set to `Unix`, it refers to the same path as linux. If it is set to `Native`, it refers to the [Specification](#specification) path.  
 By default, `Unix`.
 
+`Unix`:
+
 ```go
 // +build darwin
 
@@ -58,7 +60,28 @@ func main() {
 	// Output:
 	// "/Users/foo/.local/share"
 }
+```
 
+`Native`:
+
+```go
+// +build darwin
+
+package main
+
+import (
+	"fmt"
+
+	"github.com/zchee/go-xdgbasedir"
+)
+
+func main() {
+	xdgbasedir.Mode = xdgbasedir.Native
+	fmt.Println(xdgbasedir.DataHome())
+
+	// Output:
+	// "/Users/zchee/Library/Application Support"
+}
 ```
 
 ## Badge
