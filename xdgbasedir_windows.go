@@ -7,18 +7,19 @@
 package xdgbasedir
 
 import (
+	"os"
 	"path/filepath"
 
 	"github.com/zchee/go-xdgbasedir/home"
 )
 
 var (
-	defaultPath       = filepath.Join(home.Dir(), "AppData", "Local")
-	defaultDataHome   = defaultPath
-	defaultConfigHome = defaultPath
-	defaultDataDirs   = defaultPath
-	defaultConfigDirs = defaultPath
-	defaultCacheHome  = filepath.Join(defaultPath, "cache")
+	localAppData      = filepath.FromSlash(os.Getenv("LOCALAPPDATA"))
+	defaultDataHome   = localAppData
+	defaultConfigHome = localAppData
+	defaultDataDirs   = localAppData
+	defaultConfigDirs = localAppData
+	defaultCacheHome  = filepath.Join(localAppData, "cache")
 	defaultRuntimeDir = home.Dir()
 )
 
