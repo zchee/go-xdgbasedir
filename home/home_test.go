@@ -2,13 +2,15 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package home
+package home_test
 
 import (
 	"os"
 	"os/user"
 	"path/filepath"
 	"testing"
+
+	"github.com/zchee/go-xdgbasedir/home"
 )
 
 func TestDir(t *testing.T) {
@@ -51,7 +53,7 @@ func TestDir(t *testing.T) {
 		}
 
 		t.Run(tt.name, func(t *testing.T) {
-			if got := Dir(); got != tt.want {
+			if got := home.Dir(); got != tt.want {
 				t.Errorf("Dir() = %v, want %v", got, tt.want)
 			}
 		})
