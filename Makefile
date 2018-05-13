@@ -2,15 +2,17 @@ PKG := github.com/zchee/go-xdgbasedir
 VERSION := $(shell cat VERSION.txt)
 
 GO_TEST ?= go test
+GO_TEST_TARGET ?= .
+GO_TEST_PACKAGE ?= ./...
 BUILD_IMAGE ?= golang:1.10.2-stretch
 
 .PHONY: test
 test:  ## Run the go test
-	${GO_TEST} -v -race ./...
+	${GO_TEST} -v -race -run=${GO_TEST_TARGET} ${GO_TEST_PACKAGE}
 
 .PHONY: test.docker
 test.docker:  ## Run the go test in the container
-	docker run --rm -it -v ${CURDIR}:/go/src/${PKG} ${BUILD_IMAGE} go test -v -race ./...
+	docker run --rm -it -v ${CURDIR}:/go/src/${PKG} ${BUILD_IMAGE} go test -v -race -run=${GO_TEST_TARGET} ${GO_TEST_PACKAGE}
 
 
 .PHONY: lint
