@@ -1,0 +1,87 @@
+version: 2
+
+jobs:
+  linux:
+    docker:
+      - image: golang:1.10.2-stretch
+    working_directory: /go/src/github.com/zchee/go-xdgbasedir
+    steps:
+      - checkout
+      - run:
+          name: Install test dependencies tools
+          command: |
+            go get -u github.com/golang/lint/golint
+      - run:
+          name: Run gofmt and lint tools
+          command: |
+            echo -e "\\nRun gofmt:\\n"
+            test -z "$(gofmt -s -l -w . | tee /dev/stderr)"
+            echo -e "\\nRun go vet:\\n"
+            go vet -v -all -shadow .
+            echo -e "\\nRun golint:\\n"
+            golint -min_confidence=0.8 -set_exit_status ./...
+      - run:
+          name: Take a coverage
+          environment:
+          command: |
+            go test -v -race -covermode=atomic -coverpkg=./... -coverprofile=coverage.out ./...
+      - run:
+          name: Send coverage reports to codecov.io
+          command: |
+            bash <(curl -s https://codecov.io/bash) -P ${CIRCLE_PULL_REQUEST##*/}
+
+  macos:
+    macos:
+      xcode: "9.3.0"
+    environment:
+      PATH: /Users/distiller/go/bin:/usr/local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+      GOPATH: /Users/distiller/go
+      HOMEBREW_NO_AUTO_UPDATE: true
+    working_directory: ~/go/src/github.com/zchee/go-xdgbasedir
+    shell: /bin/bash --login -eo pipefail
+    steps:
+      - run:
+          name: Show macOS environment
+          command: |
+            printf "uname -a:\\n%s\\n\\n" "$(uname -a)"
+            printf "sw_vers:\\n%s\\n\\n" "$(sw_vers)"
+            printf "xcodebuild -version:\\n%s\\n\\n" "$(xcodebuild -version)"
+            printf "system_profiler SPHardwareDataType:\\n%s\\n\\n" "$(system_profiler SPHardwareDataType)"
+      - checkout
+      - run:
+          name: Install latest go via brew
+          command: |
+            brew install https://github.com/Homebrew/homebrew-core/raw/master/Formula/go.rb
+            go version
+            go env
+      - run:
+          name: Install test dependencies tools
+          command: |
+            go get -u github.com/golang/lint/golint
+      - run:
+          name: Run lint tools
+          command: |
+            echo -e "\\nRun gofmt:\\n"
+            test -z "$(gofmt -s -l -w . | tee /dev/stderr)"
+            echo -e "\\nRun go vet:\\n"
+            go vet -v -all -shadow .
+            echo -e "\\nRun golint:\\n"
+            golint -min_confidence=0.8 -set_exit_status ./...
+      - run:
+          name: Take a coverage
+          environment:
+          command: |
+            go test -v -race -covermode=atomic -coverpkg=./... -coverprofile=coverage.out ./...
+      - run:
+          name: Send coverage reports to codecov.io
+          command: |
+            bash <(curl -s https://codecov.io/bash) -P ${CIRCLE_PULL_REQUEST##*/}
+
+workflows:
+  version: 2
+  test-workflow:
+    jobs:
+      - linux:
+          context: org-global
+      - macos:
+          context: org-global
