@@ -16,4 +16,4 @@
 // - There is a set of preference ordered base directories relative to which configuration files should be searched. This set of directories is defined by the environment variable $XDG_CONFIG_DIRS.
 //
 // - There is a single base directory relative to which user-specific non-essential (cached) data should be written. This directory is defined by the environment variable $XDG_CACHE_HOME.
-package xdgbasedir
+package xdgbasedir // import "github.com/zchee/go-xdgbasedir"
