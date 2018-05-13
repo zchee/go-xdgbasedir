@@ -1,5 +1,7 @@
 # go-xdgbasedir
 
+[![XDGBaseDirSpecVersion](https://img.shields.io/badge/%20XDG%20Base%20Dir%20-%200.8-blue.svg?style=flat-square)](https://specifications.freedesktop.org/basedir-spec/0.8/)
+
 A package xdgbasedir implements a XDG Base Directory Specification for Go.
 
 | **linux**                                   | **darwin**                                  | **windows**                                   |
@@ -14,7 +16,7 @@ A package xdgbasedir implements a XDG Base Directory Specification for Go.
   - https://specifications.freedesktop.org/basedir-spec/latest/
 
 ## Current specification version:
-
+  
   - 0.8
 
 ## Specification
@@ -85,11 +87,11 @@ func main() {
 
 powered by [shields.io](https://shields.io).
 
-[![XDGBaseDirSpecVersion](https://img.shields.io/badge/%20XDG%20Base%20Dir%20-%200.8%20-blue.svg?style=flat-square)]()
+[![XDGBaseDirSpecVersion](https://img.shields.io/badge/%20XDG%20Base%20Dir%20-%200.8-blue.svg?style=flat-square)](https://specifications.freedesktop.org/basedir-spec/0.8/)
 
 markdown:
-```md
-[![XDGBaseDirSpecVersion](https://img.shields.io/badge/%20XDG%20Base%20Dir%20-%200.8%20-blue.svg?style=flat-square)]()
+```markdown
+[![XDGBaseDirSpecVersion](https://img.shields.io/badge/%20XDG%20Base%20Dir%20-%200.8-blue.svg?style=flat-square)](https://specifications.freedesktop.org/basedir-spec/0.8/)
 ```
 
 <!-- badge links -->
