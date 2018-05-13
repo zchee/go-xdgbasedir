@@ -24,7 +24,7 @@ lint.fmt:
 
 .PHONY: lint.fmt
 lint.vet:
-	go tool vet -v -all -shadow $(shell go list -f='{{.Dir}}' ./...)
+	go vet -v -all -shadow .
 
 .PHONY: lint.golint
 lint.golint: $(shell command -v golint)
