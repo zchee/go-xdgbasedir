@@ -23,10 +23,10 @@ Package `xdgbasedir` implements a freedesktop XDG Base Directory Specification f
 
 | func           | linux, darwin (Mode: `Unix`)  | darwin (Mode: `Native`)         | windows                               |
 |----------------|-------------------------------|---------------------------------|---------------------------------------|
-| `DataHome()`   | `~/.local/share`              | `~/Library/Application Support` | `C:\Users\%USER%\AppData\Local`       |
-| `ConfigHome()` | `~/.config`                   | `~/Library/Preferences`         | `C:\Users\%USER%\AppData\Local`       |
-| `DataDirs()`   | `/usr/local/share:/usr/share` | `~/Library/Application Support` | `C:\Users\%USER%\AppData\Local`       |
-| `ConfigDirs()` | `/etc/xdg`                    | `~/Library/Preferences`         | `C:\Users\%USER%\AppData\Local`       |
+| `DataHome()`   | `~/.local/share`              | `~/Library/Application Support` | `C:\Users\%USER%\AppData\Roaming`     |
+| `ConfigHome()` | `~/.config`                   | `~/Library/Preferences`         | `C:\Users\%USER%\AppData\Roaming`     |
+| `DataDirs()`   | `/usr/local/share:/usr/share` | `~/Library/Application Support` | `C:\Users\%USER%\AppData\Roaming`     |
+| `ConfigDirs()` | `/etc/xdg`                    | `~/Library/Preferences`         | `C:\Users\%USER%\AppData\Roaming`     |
 | `CacheHome()`  | `~/.cache`                    | `~/Library/Caches`              | `C:\Users\%USER%\AppData\Local\cache` |
 | `RuntimeDir()` | `/run/user/$(id -u)`          | `~/Library/Application Support` | `C:\Users\%USER%`                     |
 
