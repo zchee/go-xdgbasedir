@@ -20,7 +20,7 @@ func TestDataHome(t *testing.T) {
 	var testDefaultDataHome string
 	switch runtime.GOOS {
 	case "windows":
-		testDefaultDataHome = filepath.Join(home.Dir(), "AppData", "Local")
+		testDefaultDataHome = filepath.Join(home.Dir(), "AppData", "Roaming")
 	default:
 		testDefaultDataHome = filepath.Join(home.Dir(), ".local", "share")
 	}
@@ -61,7 +61,7 @@ func TestConfigHome(t *testing.T) {
 	var testDefaultConfigHome string
 	switch runtime.GOOS {
 	case "windows":
-		testDefaultConfigHome = filepath.Join(home.Dir(), "AppData", "Local")
+		testDefaultConfigHome = filepath.Join(home.Dir(), "AppData", "Roaming")
 	default:
 		testDefaultConfigHome = filepath.Join(home.Dir(), ".config")
 	}
@@ -101,7 +101,7 @@ func TestDataDirs(t *testing.T) {
 	var testDefaultDataDirs string
 	switch runtime.GOOS {
 	case "windows":
-		testDefaultDataDirs = filepath.Join(home.Dir(), "AppData", "Local")
+		testDefaultDataDirs = filepath.Join(home.Dir(), "AppData", "Roaming")
 	default:
 		testDefaultDataDirs = filepath.Join("/usr", "local", "share") + string(filepath.ListSeparator) + filepath.Join("/usr", "share")
 	}
@@ -141,7 +141,7 @@ func TestConfigDirs(t *testing.T) {
 	var testDefaultConfigDirs string
 	switch runtime.GOOS {
 	case "windows":
-		testDefaultConfigDirs = filepath.Join(home.Dir(), "AppData", "Local")
+		testDefaultConfigDirs = filepath.Join(home.Dir(), "AppData", "Roaming")
 	default:
 		testDefaultConfigDirs = filepath.Join("/etc", "xdg")
 	}
