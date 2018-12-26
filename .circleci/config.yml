@@ -32,7 +32,7 @@ jobs:
 
   macos:
     macos:
-      xcode: "9.3.0"
+      xcode: 10.1.0
     environment:
       PATH: /Users/distiller/go/bin:/usr/local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
       GOPATH: /Users/distiller/go
