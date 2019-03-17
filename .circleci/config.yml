@@ -3,7 +3,7 @@ version: 2
 jobs:
   linux:
     docker:
-      - image: golang:1.10.2-stretch
+      - image: golang:1.12-stretch
     working_directory: /go/src/github.com/zchee/go-xdgbasedir
     steps:
       - checkout
@@ -32,7 +32,7 @@ jobs:
 
   macos:
     macos:
-      xcode: 10.1.0
+      xcode: 10.2.0
     environment:
       PATH: /Users/distiller/go/bin:/usr/local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
       GOPATH: /Users/distiller/go
