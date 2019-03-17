@@ -7,7 +7,6 @@
 package home
 
 import (
-	"bytes"
 	"fmt"
 	"os"
 	"os/exec"
@@ -30,7 +29,7 @@ func Dir() string {
 	}
 
 	// gets the home directory path use 'eval echo ~$USER' magic
-	stdout := new(bytes.Buffer)
+	stdout := new(strings.Builder)
 	cmd := exec.Command("sh", "-c", fmt.Sprintf("eval echo ~%s", usrName))
 	cmd.Stdout = stdout
 	if err := cmd.Run(); err != nil {
