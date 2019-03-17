@@ -10,14 +10,14 @@ jobs:
       - run:
           name: Install test dependencies tools
           command: |
-            go get -u github.com/golang/lint/golint
+            go get -u golang.org/x/lint/golint
       - run:
           name: Run gofmt and lint tools
           command: |
             echo -e "\\nRun gofmt:\\n"
             test -z "$(gofmt -s -l -w . | tee /dev/stderr)"
             echo -e "\\nRun go vet:\\n"
-            go vet -v -all -shadow .
+            go vet -v -all .
             echo -e "\\nRun golint:\\n"
             golint -min_confidence=0.8 -set_exit_status ./...
       - run:
@@ -36,7 +36,7 @@ jobs:
     environment:
       PATH: /Users/distiller/go/bin:/usr/local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
       GOPATH: /Users/distiller/go
-      HOMEBREW_NO_AUTO_UPDATE: true
+      HOMEBREW_NO_AUTO_UPDATE: "true"
     working_directory: ~/go/src/github.com/zchee/go-xdgbasedir
     shell: /bin/bash --login -eo pipefail
     steps:
@@ -57,14 +57,14 @@ jobs:
       - run:
           name: Install test dependencies tools
           command: |
-            go get -u github.com/golang/lint/golint
+            go get -u golang.org/x/lint/golint
       - run:
           name: Run lint tools
           command: |
             echo -e "\\nRun gofmt:\\n"
             test -z "$(gofmt -s -l -w . | tee /dev/stderr)"
             echo -e "\\nRun go vet:\\n"
-            go vet -v -all -shadow .
+            go vet -v -all .
             echo -e "\\nRun golint:\\n"
             golint -min_confidence=0.8 -set_exit_status ./...
       - run:
