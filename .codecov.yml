@@ -5,11 +5,47 @@ coverage:
 
   status:
     project:
-      default:
+      default: off
+      linux:
+        flags: linux
+        target: auto
+        threshold: 10%
+      darwin:
+        flags: darwin
+        target: auto
+        threshold: 10%
+      windows:
+        flags: windows
         target: auto
         threshold: 10%
     patch:
-      default:
+      default: off
+      linux:
+        flags: linux
         only_pulls: true
         target: 50%
         threshold: 10%
+      darwin:
+        flags: darwin
+        only_pulls: true
+        target: 50%
+        threshold: 10%
+      windows:
+        flags: windows
+        only_pulls: true
+        target: auto
+        threshold: 10%
+    changes: false
+  ignore:
+    - "vendor/*"
+
+flags:
+  linux:
+    paths:
+      - /
+  darwin:
+    paths:
+      - /
+  windows:
+    paths:
+      - /
