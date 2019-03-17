@@ -28,7 +28,7 @@ jobs:
       - run:
           name: Send coverage reports to codecov.io
           command: |
-            bash <(curl -s https://codecov.io/bash) -P ${CIRCLE_PULL_REQUEST##*/}
+            bash <(curl -s https://codecov.io/bash) -F linux
 
   macos:
     macos:
@@ -75,7 +75,7 @@ jobs:
       - run:
           name: Send coverage reports to codecov.io
           command: |
-            bash <(curl -s https://codecov.io/bash) -P ${CIRCLE_PULL_REQUEST##*/}
+            bash <(curl -s https://codecov.io/bash) -F darwin
 
 workflows:
   version: 2

@@ -25,4 +25,4 @@ after_test:
 
 on_success:
   - pip install -U codecov
-  - codecov -f coverage.out
+  - codecov -f coverage.out -F windows
