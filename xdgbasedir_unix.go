@@ -11,16 +11,20 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
-
-	"github.com/zchee/go-xdgbasedir/home"
 )
 
+var home string
+
+func init() {
+	home, _ = os.UserHomeDir()
+}
+
 var (
-	defaultDataHome   = filepath.Join(home.Dir(), ".local", "share")
-	defaultConfigHome = filepath.Join(home.Dir(), ".config")
+	defaultDataHome   = filepath.Join(home, ".local", "share")
+	defaultConfigHome = filepath.Join(home, ".config")
 	defaultDataDirs   = filepath.Join("/usr", "local", "share") + string(filepath.ListSeparator) + filepath.Join("/usr", "share")
 	defaultConfigDirs = filepath.Join("/etc", "xdg")
-	defaultCacheHome  = filepath.Join(home.Dir(), ".cache")
+	defaultCacheHome  = filepath.Join(home, ".cache")
 	defaultRuntimeDir = filepath.Join("/run", "user", strconv.Itoa(os.Getuid()))
 )
 

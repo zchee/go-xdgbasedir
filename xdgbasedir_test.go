@@ -12,17 +12,21 @@ import (
 	"strconv"
 	"sync"
 	"testing"
-
-	"github.com/zchee/go-xdgbasedir/home"
 )
+
+var home string
+
+func init() {
+	home, _ = os.UserHomeDir()
+}
 
 func TestDataHome(t *testing.T) {
 	var testDefaultDataHome string
 	switch runtime.GOOS {
 	case "windows":
-		testDefaultDataHome = filepath.Join(home.Dir(), "AppData", "Roaming")
+		testDefaultDataHome = filepath.Join(home, "AppData", "Roaming")
 	default:
-		testDefaultDataHome = filepath.Join(home.Dir(), ".local", "share")
+		testDefaultDataHome = filepath.Join(home, ".local", "share")
 	}
 
 	tests := []struct {
@@ -61,9 +65,9 @@ func TestConfigHome(t *testing.T) {
 	var testDefaultConfigHome string
 	switch runtime.GOOS {
 	case "windows":
-		testDefaultConfigHome = filepath.Join(home.Dir(), "AppData", "Roaming")
+		testDefaultConfigHome = filepath.Join(home, "AppData", "Roaming")
 	default:
-		testDefaultConfigHome = filepath.Join(home.Dir(), ".config")
+		testDefaultConfigHome = filepath.Join(home, ".config")
 	}
 
 	tests := []struct {
@@ -101,7 +105,7 @@ func TestDataDirs(t *testing.T) {
 	var testDefaultDataDirs string
 	switch runtime.GOOS {
 	case "windows":
-		testDefaultDataDirs = filepath.Join(home.Dir(), "AppData", "Roaming")
+		testDefaultDataDirs = filepath.Join(home, "AppData", "Roaming")
 	default:
 		testDefaultDataDirs = filepath.Join("/usr", "local", "share") + string(filepath.ListSeparator) + filepath.Join("/usr", "share")
 	}
@@ -141,7 +145,7 @@ func TestConfigDirs(t *testing.T) {
 	var testDefaultConfigDirs string
 	switch runtime.GOOS {
 	case "windows":
-		testDefaultConfigDirs = filepath.Join(home.Dir(), "AppData", "Roaming")
+		testDefaultConfigDirs = filepath.Join(home, "AppData", "Roaming")
 	default:
 		testDefaultConfigDirs = filepath.Join("/etc", "xdg")
 	}
@@ -181,9 +185,9 @@ func TestCacheHome(t *testing.T) {
 	var testDefaultCacheHome string
 	switch runtime.GOOS {
 	case "windows":
-		testDefaultCacheHome = filepath.Join(home.Dir(), "AppData", "Local", "cache")
+		testDefaultCacheHome = filepath.Join(home, "AppData", "Local", "cache")
 	default:
-		testDefaultCacheHome = filepath.Join(home.Dir(), ".cache")
+		testDefaultCacheHome = filepath.Join(home, ".cache")
 	}
 
 	tests := []struct {
@@ -221,7 +225,7 @@ func TestRuntimeDir(t *testing.T) {
 	var testDefaultRuntimeDir string
 	switch runtime.GOOS {
 	case "windows":
-		testDefaultRuntimeDir = home.Dir()
+		testDefaultRuntimeDir = home
 	default:
 		testDefaultRuntimeDir = filepath.Join("/run", "user", strconv.Itoa(os.Getuid()))
 	}
@@ -274,32 +278,32 @@ func TestNativeMode(t *testing.T) {
 		{
 			name: "DataHome",
 			fn:   DataHome(),
-			want: filepath.Join(home.Dir(), "Library", "Application Support"),
+			want: filepath.Join(home, "Library", "Application Support"),
 		},
 		{
 			name: "ConfigHome",
 			fn:   ConfigHome(),
-			want: filepath.Join(home.Dir(), "Library", "Preferences"),
+			want: filepath.Join(home, "Library", "Preferences"),
 		},
 		{
 			name: "DataDirs",
 			fn:   DataDirs(),
-			want: filepath.Join(home.Dir(), "Library", "Application Support"),
+			want: filepath.Join(home, "Library", "Application Support"),
 		},
 		{
 			name: "ConfigDirs",
 			fn:   ConfigDirs(),
-			want: filepath.Join(home.Dir(), "Library", "Preferences"),
+			want: filepath.Join(home, "Library", "Preferences"),
 		},
 		{
 			name: "CacheHome",
 			fn:   CacheHome(),
-			want: filepath.Join(home.Dir(), "Library", "Caches"),
+			want: filepath.Join(home, "Library", "Caches"),
 		},
 		{
 			name: "RuntimeDir",
 			fn:   RuntimeDir(),
-			want: filepath.Join(home.Dir(), "Library", "Application Support"),
+			want: filepath.Join(home, "Library", "Application Support"),
 		},
 	}
 	for _, tt := range tests {

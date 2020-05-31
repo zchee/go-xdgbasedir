@@ -10,8 +10,6 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
-
-	"github.com/zchee/go-xdgbasedir/home"
 )
 
 var (
@@ -24,22 +22,23 @@ var (
 )
 
 func initDir() {
+	home, _ := os.UserHomeDir()
 	initOnce.Do(func() {
 		switch Mode {
 		case Unix:
-			defaultDataHome = filepath.Join(home.Dir(), ".local", "share")
-			defaultConfigHome = filepath.Join(home.Dir(), ".config")
+			defaultDataHome = filepath.Join(home, ".local", "share")
+			defaultConfigHome = filepath.Join(home, ".config")
 			defaultDataDirs = filepath.Join("/usr", "local", "share") + string(filepath.ListSeparator) + filepath.Join("/usr", "share")
 			defaultConfigDirs = filepath.Join("/etc", "xdg")
-			defaultCacheHome = filepath.Join(home.Dir(), ".cache")
+			defaultCacheHome = filepath.Join(home, ".cache")
 			defaultRuntimeDir = filepath.Join("/run", "user", strconv.Itoa(os.Getuid()))
 		case Native:
 			// ref: https://developer.apple.com/library/content/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/MacOSXDirectories/MacOSXDirectories.html
-			defaultDataHome = filepath.Join(home.Dir(), "Library", "Application Support")
-			defaultConfigHome = filepath.Join(home.Dir(), "Library", "Preferences")
+			defaultDataHome = filepath.Join(home, "Library", "Application Support")
+			defaultConfigHome = filepath.Join(home, "Library", "Preferences")
 			defaultDataDirs = defaultDataHome
 			defaultConfigDirs = defaultConfigHome
-			defaultCacheHome = filepath.Join(home.Dir(), "Library", "Caches")
+			defaultCacheHome = filepath.Join(home, "Library", "Caches")
 			defaultRuntimeDir = defaultDataHome
 		}
 	})
