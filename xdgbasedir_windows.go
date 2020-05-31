@@ -9,9 +9,13 @@ package xdgbasedir
 import (
 	"os"
 	"path/filepath"
-
-	"github.com/zchee/go-xdgbasedir/home"
 )
+
+var home string
+
+func init() {
+	home, _ = os.UserHomeDir()
+}
 
 var (
 	appData           = filepath.FromSlash(os.Getenv("APPDATA"))
@@ -21,7 +25,7 @@ var (
 	defaultDataDirs   = appData
 	defaultConfigDirs = appData
 	defaultCacheHome  = filepath.Join(localAppData, "cache")
-	defaultRuntimeDir = home.Dir()
+	defaultRuntimeDir = home
 )
 
 func dataHome() string {
